@@ -2,18 +2,18 @@
 
 Skaner najtańszych lotów, który działa w tle. Sprawdza ceny lotów z polskich lotnisk
 (oraz przygranicznych w Czechach i Niemczech) do wybranego celu, domyślnie **Las Vegas (LAS)**.
-Gdy cena na któryś miesiąc spadnie do nowego minimum, wysyła powiadomienie na **WhatsApp**.
+Gdy cena na któryś miesiąc spadnie do nowego minimum, wysyła powiadomienie na **Telegram**.
 
 Przykładowe powiadomienie:
 
 ```
-✈️ *Nowe najniższe ceny lotów!*
+✈️ Nowe najniższe ceny lotów!
 
-*Las Vegas (LAS) – listopad 2026*: 2 499 PLN (-7% względem poprzedniego minimum)
+Las Vegas (LAS) – listopad 2026: 2 499 PLN (-7% względem poprzedniego minimum)
 Wylot Berlin (BER) 2026-11-03, powrót 2026-11-15 (12 dni)
 Przesiadki: 1/1, linia: LO
 Z dojazdem na lotnisko: ~2 649 PLN
-https://www.aviasales.com/search/...
+Zobacz ofertę
 ```
 
 ## Jak to działa
@@ -24,7 +24,7 @@ https://www.aviasales.com/search/...
 3. Dla każdego miesiąca wybiera najtańszą ofertę. Przy porównaniu dolicza koszt dojazdu
    do lotnisk zagranicznych (`extra_cost`).
 4. Porównuje ją z historią w `data/state.json`. Jeśli to nowe minimum, niższe o co najmniej
-   `min_drop_percent` od ostatnio zgłoszonej ceny, wysyła WhatsApp.
+   `min_drop_percent` od ostatnio zgłoszonej ceny, wysyła wiadomość na Telegram.
 
 **Źródło cen:** [Travelpayouts / Aviasales Data API](https://www.travelpayouts.com/).
 Jest darmowe i zbiera ceny z wyszukiwań w setkach linii lotniczych i agencji.
@@ -41,14 +41,14 @@ i łatwo dodać kolejne (np. Kiwi Tequila, SerpApi Google Flights).
 Załóż konto na <https://www.travelpayouts.com/>. Token API znajdziesz w
 *Profile → API token*.
 
-### 2. WhatsApp przez CallMeBot (darmowy)
-1. Dodaj do kontaktów numer bota podany na
-   <https://www.callmebot.com/blog/free-api-whatsapp-messages/>
-   (numer czasem się zmienia, więc sprawdź go na stronie).
-2. Wyślij do niego na WhatsAppie wiadomość `I allow callmebot to send me messages`.
-3. W odpowiedzi dostaniesz `apikey`.
-
-Alternatywnie możesz użyć Twilio (`channel = "twilio"` w `config.toml`).
+### 2. Bot na Telegramie (darmowy)
+1. W Telegramie otwórz czat z **@BotFather** i wyślij `/newbot`.
+2. Podaj nazwę bota (dowolną) i jego login (musi kończyć się na `bot`, np. `moj_skaner_lotow_bot`).
+3. BotFather odpowie **tokenem**, np. `123456789:AAH...`. To jest `TELEGRAM_BOT_TOKEN`.
+4. Znajdź swojego nowego bota w Telegramie, kliknij **Start** i wyślij mu dowolną wiadomość.
+5. Otwórz w przeglądarce `https://api.telegram.org/bot<TOKEN>/getUpdates`, wstawiając swój token
+   w miejsce `<TOKEN>`. W odpowiedzi znajdź `"chat":{"id":123456789,...`. Ta liczba to
+   `TELEGRAM_CHAT_ID`. Lokalnie to samo pokaże `python -m skaner telegram-chat-id`.
 
 ### 3. Uruchomienie w tle na GitHub Actions (zalecane)
 W repozytorium na GitHubie wejdź w *Settings → Secrets and variables → Actions*
@@ -57,8 +57,8 @@ i dodaj sekrety:
 | Sekret | Wartość |
 |---|---|
 | `TRAVELPAYOUTS_TOKEN` | token z kroku 1 |
-| `WHATSAPP_PHONE` | Twój numer, np. `+48600123456` |
-| `CALLMEBOT_APIKEY` | apikey z kroku 2 |
+| `TELEGRAM_BOT_TOKEN` | token od @BotFather |
+| `TELEGRAM_CHAT_ID` | id czatu z kroku 2 |
 
 Workflow `.github/workflows/scan.yml` musi być na domyślnej gałęzi (`main`).
 Uruchamia się wtedy co 6 godzin. Pierwszy skan możesz odpalić ręcznie:
@@ -69,10 +69,10 @@ najtańszych cen na każdy miesiąc, a później tylko nowe minima.
 
 ```bash
 export TRAVELPAYOUTS_TOKEN=...
-export WHATSAPP_PHONE=+48600123456
-export CALLMEBOT_APIKEY=...
+export TELEGRAM_BOT_TOKEN=...
+export TELEGRAM_CHAT_ID=...
 
-python -m skaner test-notify          # testowa wiadomość na WhatsApp
+python -m skaner test-notify          # testowa wiadomość na Telegram
 python -m skaner run --dry-run        # skan bez wysyłki (wynik w konsoli)
 python -m skaner run                  # jeden skan
 python -m skaner loop --hours 6       # działa w tle, skan co 6 godzin

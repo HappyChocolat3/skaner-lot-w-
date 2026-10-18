@@ -3,17 +3,19 @@
   python -m skaner run              # jeden skan (np. z crona / GitHub Actions)
   python -m skaner loop --hours 6   # działa w tle i skanuje co N godzin
   python -m skaner airports         # lista obsługiwanych lotnisk
-  python -m skaner test-notify      # wysyła testową wiadomość na WhatsApp
+  python -m skaner test-notify      # wysyła testową wiadomość na Telegram
+  python -m skaner telegram-chat-id # pokazuje chat_id (najpierw napisz coś do bota)
 """
 
 import argparse
 import logging
+import os
 import sys
 import time
 
 from .airports import AIRPORTS
 from .config import load_config
-from .notifier import build_notifier
+from .notifier import build_notifier, telegram_chat_ids
 from .providers import build_provider
 from .scanner import format_alerts, scan
 from .storage import State
@@ -56,6 +58,7 @@ def main(argv=None) -> int:
     sub.choices["loop"].add_argument("--hours", type=float, default=6)
     sub.add_parser("airports")
     sub.add_parser("test-notify")
+    sub.add_parser("telegram-chat-id")
 
     args = parser.parse_args(argv)
     logging.basicConfig(
@@ -69,6 +72,13 @@ def main(argv=None) -> int:
         return 0
     if args.cmd == "test-notify":
         build_notifier(load_config(args.config).notify.channel).send("✈️ Skaner lotów: test powiadomienia działa!")
+        return 0
+    if args.cmd == "telegram-chat-id":
+        chats = telegram_chat_ids(os.environ.get("TELEGRAM_BOT_TOKEN", ""))
+        if not chats:
+            print("Brak wiadomości. Napisz coś do swojego bota na Telegramie i spróbuj ponownie.")
+        for chat_id, name in chats:
+            print(f"TELEGRAM_CHAT_ID={chat_id}  ({name})")
         return 0
     if args.cmd == "run":
         return run_once(args)
