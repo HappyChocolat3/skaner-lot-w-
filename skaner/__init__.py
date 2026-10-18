@@ -1,1 +1,1 @@
-"""Skaner najtańszych lotów z powiadomieniami na WhatsApp."""
+"""Skaner najtańszych lotów z powiadomieniami na Telegram."""

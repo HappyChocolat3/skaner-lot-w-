@@ -36,8 +36,8 @@ PRG = 150
 OSR = 80
 
 [notify]
-# "callmebot" (darmowy WhatsApp), "twilio" albo "console" (tylko log)
-channel = "callmebot"
+# "telegram" albo "console" (tylko log, bez wysyłki)
+channel = "telegram"
 
 # Powiadom, gdy cena na dany miesiąc jest niższa od dotychczasowego minimum
 # o co najmniej tyle procent (chroni przed spamem przy drobnych wahaniach).

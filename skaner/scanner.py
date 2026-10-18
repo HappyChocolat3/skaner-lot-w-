@@ -1,5 +1,6 @@
 """Główna logika: pobiera ceny, wybiera najtańszą ofertę na miesiąc i decyduje o powiadomieniu."""
 
+import html
 import logging
 import time
 from dataclasses import dataclass
@@ -137,10 +138,10 @@ def format_alerts(alerts: list[Alert]) -> str:
     firsts = [a for a in alerts if a.kind == "first"]
     parts = []
     if drops:
-        parts.append("✈️ *Nowe najniższe ceny lotów!*")
+        parts.append("✈️ <b>Nowe najniższe ceny lotów!</b>")
         parts += [_format_one(a) for a in sorted(drops, key=lambda a: (a.destination, a.month))]
     if firsts:
-        parts.append("📋 *Najtańsze loty na poszczególne miesiące*")
+        parts.append("📋 <b>Najtańsze loty na poszczególne miesiące</b>")
         parts += [_format_one(a) for a in sorted(firsts, key=lambda a: (a.destination, a.month))]
     return "\n\n".join(parts)
 
@@ -148,20 +149,21 @@ def format_alerts(alerts: list[Alert]) -> str:
 def _format_one(a: Alert) -> str:
     o = a.offer
     cur = o["currency"]
-    head = f"*{describe(a.destination)} – {month_label(a.month)}*: {_fmt(o['price'])} {cur}"
+    dest = html.escape(describe(a.destination))
+    head = f"<b>{dest} – {month_label(a.month)}</b>: {_fmt(o['price'])} {cur}"
     if a.previous:
         pct = (a.previous - o["effective_price"]) / a.previous * 100
         head += f" (-{pct:.0f}% względem poprzedniego minimum)"
     lines = [head]
-    dep = f"Wylot {describe(o['origin'])} {o['departure_date']}"
+    dep = f"Wylot {html.escape(describe(o['origin']))} {o['departure_date']}"
     if o.get("return_date"):
         days = (date.fromisoformat(o["return_date"]) - date.fromisoformat(o["departure_date"])).days
         dep += f", powrót {o['return_date']} ({days} dni)"
     lines.append(dep)
     transfers = f"{o['transfers']}" + (f"/{o['return_transfers']}" if o.get("return_date") else "")
-    lines.append(f"Przesiadki: {transfers}" + (f", linia: {o['airline']}" if o.get("airline") else ""))
+    lines.append(f"Przesiadki: {transfers}" + (f", linia: {html.escape(o['airline'])}" if o.get("airline") else ""))
     if o["effective_price"] != o["price"]:
         lines.append(f"Z dojazdem na lotnisko: ~{_fmt(o['effective_price'])} {cur}")
     if o.get("link"):
-        lines.append(o["link"])
+        lines.append(f'<a href="{html.escape(o["link"])}">Zobacz ofertę</a>')
     return "\n".join(lines)

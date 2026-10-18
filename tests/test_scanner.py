@@ -1,12 +1,15 @@
+import io
 import json
 import tempfile
 import unittest
+import urllib.parse
+from unittest import mock
 from datetime import date
 from pathlib import Path
 
 from skaner.config import Config, NotifyConfig, SearchConfig
 from skaner.models import Offer
-from skaner.notifier import split_message
+from skaner.notifier import TelegramNotifier, split_message
 from skaner.providers.base import Provider
 from skaner.providers.travelpayouts import TravelpayoutsProvider
 from skaner.scanner import format_alerts, months_from, scan
@@ -123,6 +126,8 @@ class ScannerTest(unittest.TestCase):
         self.assertIn("Berlin (BER)", msg)
         self.assertIn("14 dni", msg)
         self.assertIn("~2 650 PLN", msg)
+        self.assertIn('<a href="https://example.com/BER2026-11">Zobacz ofertę</a>', msg)
+        self.assertIn("<b>Las Vegas (LAS) – listopad 2026</b>", msg)
 
     def test_past_months_pruned(self):
         state = State(self.state_path)
@@ -143,6 +148,34 @@ class TravelpayoutsParseTest(unittest.TestCase):
         self.assertEqual((o.origin, o.price, o.trip_days, o.return_transfers), ("WMI", 2349, 14, 2))
         self.assertEqual(o.link, "https://www.aviasales.com/search/WMI0312LAS17121")
         self.assertIsNone(TravelpayoutsProvider._parse({"price": 1}, "PLN"))
+
+
+class TelegramTest(unittest.TestCase):
+    def test_send_posts_html_message(self):
+        sent = []
+
+        class Resp(io.BytesIO):
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                pass
+
+        def fake_urlopen(url, data=None, timeout=None):
+            sent.append((url, urllib.parse.parse_qs(data.decode())))
+            return Resp(b'{"ok": true}')
+
+        with mock.patch("skaner.notifier.urllib.request.urlopen", fake_urlopen):
+            TelegramNotifier("123:abc", "42").send("<b>test</b>")
+        url, params = sent[0]
+        self.assertEqual(url, "https://api.telegram.org/bot123:abc/sendMessage")
+        self.assertEqual(params["chat_id"], ["42"])
+        self.assertEqual(params["parse_mode"], ["HTML"])
+        self.assertEqual(params["text"], ["<b>test</b>"])
+
+    def test_requires_credentials(self):
+        with self.assertRaises(ValueError):
+            TelegramNotifier("", "42")
 
 
 class SplitTest(unittest.TestCase):
