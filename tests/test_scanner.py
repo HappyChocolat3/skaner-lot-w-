@@ -1,0 +1,157 @@
+import json
+import tempfile
+import unittest
+from datetime import date
+from pathlib import Path
+
+from skaner.config import Config, NotifyConfig, SearchConfig
+from skaner.models import Offer
+from skaner.notifier import split_message
+from skaner.providers.base import Provider
+from skaner.providers.travelpayouts import TravelpayoutsProvider
+from skaner.scanner import format_alerts, months_from, scan
+from skaner.storage import State
+
+TODAY = date(2026, 10, 18)
+
+
+class FakeProvider(Provider):
+    def __init__(self, prices):
+        # prices: {(origin, month): [(price, dep_day, trip_days, transfers)]}
+        self.prices = prices
+
+    def search_month(self, origin, destination, month, one_way, currency):
+        y, m = map(int, month.split("-"))
+        out = []
+        for price, day, trip, transfers in self.prices.get((origin, month), []):
+            dep = date(y, m, day)
+            out.append(Offer(origin, destination, price, currency, dep,
+                             date.fromordinal(dep.toordinal() + trip), "LO", transfers, transfers,
+                             f"https://example.com/{origin}{month}"))
+        return out
+
+
+def make_cfg(**notify):
+    return Config(
+        search=SearchConfig(destinations=["LAS"], origins=["WAW", "BER"], months_ahead=2,
+                            max_transfers=2, min_trip_days=7, max_trip_days=21,
+                            extra_cost={"BER": 150}),
+        notify=NotifyConfig(channel="console", **notify),
+        provider_name="fake",
+        provider_settings={},
+    )
+
+
+class ScannerTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.state_path = Path(self.tmp.name) / "state.json"
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def run_scan(self, prices, cfg=None):
+        state = State(self.state_path)
+        alerts = scan(cfg or make_cfg(), FakeProvider(prices), state, today=TODAY, request_delay=0)
+        state.save()
+        return alerts
+
+    def test_months_from_wraps_year(self):
+        self.assertEqual(months_from(date(2026, 11, 5), 3), ["2026-11", "2026-12", "2027-01"])
+
+    def test_initial_summary_then_only_real_drops(self):
+        prices = {("WAW", "2026-10"): [(3000, 20, 10, 1)], ("WAW", "2026-11"): [(2800, 5, 14, 1)]}
+        alerts = self.run_scan(prices)
+        self.assertEqual([a.kind for a in alerts], ["first", "first"])
+
+        # bez zmian -> brak powiadomień
+        self.assertEqual(self.run_scan(prices), [])
+
+        # spadek o 1% (< min_drop_percent) -> brak powiadomienia
+        prices[("WAW", "2026-11")] = [(2772, 5, 14, 1)]
+        self.assertEqual(self.run_scan(prices), [])
+
+        # kolejny spadek: łącznie > 2% od ostatniego powiadomienia -> powiadomienie
+        prices[("WAW", "2026-11")] = [(2700, 5, 14, 1)]
+        alerts = self.run_scan(prices)
+        self.assertEqual([(a.kind, a.month) for a in alerts], [("drop", "2026-11")])
+        self.assertEqual(alerts[0].previous, 2800)
+
+        # wzrost ceny -> brak powiadomienia, minimum zostaje
+        prices[("WAW", "2026-11")] = [(3500, 5, 14, 1)]
+        self.assertEqual(self.run_scan(prices), [])
+        data = json.loads(self.state_path.read_text())
+        self.assertEqual(data["routes"]["LAS"]["2026-11"]["best"]["price"], 2700)
+        self.assertEqual(data["routes"]["LAS"]["2026-11"]["current"]["price"], 3500)
+
+    def test_no_initial_summary(self):
+        prices = {("WAW", "2026-10"): [(3000, 20, 10, 1)]}
+        self.assertEqual(self.run_scan(prices, make_cfg(send_initial_summary=False)), [])
+
+    def test_extra_cost_and_filters(self):
+        prices = {
+            # BER tańszy o 100, ale z dojazdem (150) droższy
+            ("BER", "2026-10"): [(2900, 20, 10, 1)],
+            ("WAW", "2026-10"): [
+                (3000, 20, 10, 1),
+                (1000, 20, 3, 1),   # za krótki pobyt
+                (1100, 20, 10, 3),  # za dużo przesiadek
+            ],
+        }
+        alerts = self.run_scan(prices)
+        self.assertEqual(alerts[0].offer["origin"], "WAW")
+        self.assertEqual(alerts[0].offer["price"], 3000)
+
+    def test_provider_error_does_not_stop_scan(self):
+        class Broken(FakeProvider):
+            def search_month(self, origin, *a):
+                if origin == "BER":
+                    raise RuntimeError("boom")
+                return super().search_month(origin, *a)
+
+        state = State(self.state_path)
+        alerts = scan(make_cfg(), Broken({("WAW", "2026-10"): [(3000, 20, 10, 1)]}), state,
+                      today=TODAY, request_delay=0)
+        self.assertEqual(len(alerts), 1)
+
+    def test_format_message(self):
+        prices = {("BER", "2026-11"): [(2500, 3, 14, 1)]}
+        msg = format_alerts(self.run_scan(prices))
+        self.assertIn("Las Vegas (LAS)", msg)
+        self.assertIn("listopad 2026", msg)
+        self.assertIn("2 500 PLN", msg)
+        self.assertIn("Berlin (BER)", msg)
+        self.assertIn("14 dni", msg)
+        self.assertIn("~2 650 PLN", msg)
+
+    def test_past_months_pruned(self):
+        state = State(self.state_path)
+        state.month("LAS", "2026-09")["best"] = {"effective_price": 1}
+        scan(make_cfg(), FakeProvider({}), state, today=TODAY, request_delay=0)
+        self.assertNotIn("2026-09", state.data["routes"]["LAS"])
+
+
+class TravelpayoutsParseTest(unittest.TestCase):
+    def test_parse(self):
+        item = {
+            "origin": "WAW", "destination": "LAS", "origin_airport": "WMI",
+            "destination_airport": "LAS", "price": 2349, "airline": "LO",
+            "departure_at": "2026-12-03T10:15:00+01:00", "return_at": "2026-12-17T18:00:00-08:00",
+            "transfers": 1, "return_transfers": 2, "link": "/search/WMI0312LAS17121",
+        }
+        o = TravelpayoutsProvider._parse(item, "PLN")
+        self.assertEqual((o.origin, o.price, o.trip_days, o.return_transfers), ("WMI", 2349, 14, 2))
+        self.assertEqual(o.link, "https://www.aviasales.com/search/WMI0312LAS17121")
+        self.assertIsNone(TravelpayoutsProvider._parse({"price": 1}, "PLN"))
+
+
+class SplitTest(unittest.TestCase):
+    def test_split(self):
+        blocks = ["x" * 600] * 5
+        chunks = split_message("\n\n".join(blocks), limit=1500)
+        self.assertTrue(all(len(c) <= 1500 for c in chunks))
+        self.assertEqual("\n\n".join(chunks), "\n\n".join(blocks))
+
+
+if __name__ == "__main__":
+    unittest.main()
