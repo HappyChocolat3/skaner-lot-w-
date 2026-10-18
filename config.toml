@@ -1,0 +1,54 @@
+# Konfiguracja skanera lotów.
+# Sekrety (tokeny, numer telefonu) NIE trafiają tutaj – podaj je w zmiennych środowiskowych
+# albo w GitHub Secrets (patrz README).
+
+[search]
+# Kody IATA celów. W przyszłości wystarczy dopisać kolejne, np. ["LAS", "JFK", "BKK"].
+destinations = ["LAS"]
+
+# Lotniska wylotowe. Pełna lista znanych lotnisk: python -m skaner airports
+origins = [
+  "WAW", "WMI", "KRK", "KTW", "GDN", "WRO", "POZ", "RZE",   # Polska
+  "PRG", "OSR",                                             # Czechy
+  "BER", "DRS", "LEJ",                                      # Niemcy
+]
+
+# Ile miesięcy do przodu skanować (licząc od bieżącego).
+months_ahead = 12
+
+# false = lot w obie strony, true = tylko w jedną stronę
+one_way = false
+
+currency = "PLN"
+
+# Filtry – usuń linię, żeby wyłączyć
+max_transfers = 2      # maks. przesiadek w jedną stronę (0 = tylko bezpośrednie)
+min_trip_days = 7      # min. długość pobytu w dniach (tylko loty w obie strony)
+max_trip_days = 21     # maks. długość pobytu w dniach
+
+# Dodatkowy koszt dojazdu do lotniska (PLN). Uwzględniany przy porównaniu,
+# żeby np. lot z Berlina tańszy o 50 zł nie wygrywał z lotem z Warszawy.
+[search.extra_cost]
+BER = 150
+DRS = 150
+LEJ = 200
+PRG = 150
+OSR = 80
+
+[notify]
+# "callmebot" (darmowy WhatsApp), "twilio" albo "console" (tylko log)
+channel = "callmebot"
+
+# Powiadom, gdy cena na dany miesiąc jest niższa od dotychczasowego minimum
+# o co najmniej tyle procent (chroni przed spamem przy drobnych wahaniach).
+min_drop_percent = 2
+
+# Przy pierwszym uruchomieniu wyślij podsumowanie najtańszych cen na każdy miesiąc.
+send_initial_summary = true
+
+# Opcjonalnie: zawsze powiadamiaj, gdy cena spadnie poniżej tej kwoty (0 = wyłączone).
+alert_below = 0
+
+[provider]
+name = "travelpayouts"
+market = "pl"
