@@ -4,7 +4,7 @@ import tempfile
 import unittest
 import urllib.parse
 from unittest import mock
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from skaner.config import Config, NotifyConfig, SearchConfig
@@ -12,7 +12,7 @@ from skaner.models import Offer
 from skaner.notifier import TelegramNotifier, split_message
 from skaner.providers.base import Provider
 from skaner.providers.travelpayouts import TravelpayoutsProvider
-from skaner.scanner import format_alerts, months_from, scan
+from skaner.scanner import _month_ranges, format_report, report_slot, scan, scan_months
 from skaner.storage import State
 
 TODAY = date(2026, 10, 18)
@@ -59,37 +59,33 @@ class ScannerTest(unittest.TestCase):
         state.save()
         return alerts
 
-    def test_months_from_wraps_year(self):
-        self.assertEqual(months_from(date(2026, 11, 5), 3), ["2026-11", "2026-12", "2027-01"])
+    def test_scan_months(self):
+        self.assertEqual(scan_months(date(2026, 11, 5), 3), ["2026-11", "2026-12", "2027-01"])
+        months = scan_months(date(2026, 10, 19), 12, until="2028-12")
+        self.assertEqual((months[0], months[-1], len(months)), ("2026-10", "2028-12", 27))
 
-    def test_initial_summary_then_only_real_drops(self):
+    def test_only_real_drops_are_flagged(self):
         prices = {("WAW", "2026-10"): [(3000, 20, 10, 1)], ("WAW", "2026-11"): [(2800, 5, 14, 1)]}
-        alerts = self.run_scan(prices)
-        self.assertEqual([a.kind for a in alerts], ["first", "first"])
-
-        # bez zmian -> brak powiadomień
+        # pierwsze ceny to punkt odniesienia, nie spadek
+        self.assertEqual(self.run_scan(prices), [])
         self.assertEqual(self.run_scan(prices), [])
 
-        # spadek o 1% (< min_drop_percent) -> brak powiadomienia
+        # spadek o 1% (< min_drop_percent) -> bez oznaczenia
         prices[("WAW", "2026-11")] = [(2772, 5, 14, 1)]
         self.assertEqual(self.run_scan(prices), [])
 
-        # kolejny spadek: łącznie > 2% od ostatniego powiadomienia -> powiadomienie
+        # kolejny spadek: łącznie > 2% od ostatnio oznaczonej ceny
         prices[("WAW", "2026-11")] = [(2700, 5, 14, 1)]
         alerts = self.run_scan(prices)
         self.assertEqual([(a.kind, a.month) for a in alerts], [("drop", "2026-11")])
         self.assertEqual(alerts[0].previous, 2800)
 
-        # wzrost ceny -> brak powiadomienia, minimum zostaje
+        # wzrost ceny -> minimum zostaje
         prices[("WAW", "2026-11")] = [(3500, 5, 14, 1)]
         self.assertEqual(self.run_scan(prices), [])
         data = json.loads(self.state_path.read_text())
         self.assertEqual(data["routes"]["LAS"]["2026-11"]["best"]["price"], 2700)
         self.assertEqual(data["routes"]["LAS"]["2026-11"]["current"]["price"], 3500)
-
-    def test_no_initial_summary(self):
-        prices = {("WAW", "2026-10"): [(3000, 20, 10, 1)]}
-        self.assertEqual(self.run_scan(prices, make_cfg(send_initial_summary=False)), [])
 
     def test_extra_cost_and_filters(self):
         prices = {
@@ -101,9 +97,9 @@ class ScannerTest(unittest.TestCase):
                 (1100, 20, 10, 3),  # za dużo przesiadek
             ],
         }
-        alerts = self.run_scan(prices)
-        self.assertEqual(alerts[0].offer["origin"], "WAW")
-        self.assertEqual(alerts[0].offer["price"], 3000)
+        self.run_scan(prices)
+        current = State(self.state_path).data["routes"]["LAS"]["2026-10"]["current"]
+        self.assertEqual((current["origin"], current["price"]), ("WAW", 3000))
 
     def test_provider_error_does_not_stop_scan(self):
         class Broken(FakeProvider):
@@ -113,21 +109,45 @@ class ScannerTest(unittest.TestCase):
                 return super().search_month(origin, *a)
 
         state = State(self.state_path)
-        alerts = scan(make_cfg(), Broken({("WAW", "2026-10"): [(3000, 20, 10, 1)]}), state,
-                      today=TODAY, request_delay=0)
-        self.assertEqual(len(alerts), 1)
+        scan(make_cfg(), Broken({("WAW", "2026-10"): [(3000, 20, 10, 1)]}), state, today=TODAY, request_delay=0)
+        self.assertEqual(state.data["routes"]["LAS"]["2026-10"]["current"]["price"], 3000)
 
-    def test_format_message(self):
-        prices = {("BER", "2026-11"): [(2500, 3, 14, 1)]}
-        msg = format_alerts(self.run_scan(prices))
-        self.assertIn("Las Vegas (LAS)", msg)
-        self.assertIn("listopad 2026", msg)
-        self.assertIn("2 500 PLN", msg)
-        self.assertIn("Berlin (BER)", msg)
-        self.assertIn("14 dni", msg)
-        self.assertIn("~2 650 PLN", msg)
-        self.assertIn('<a href="https://example.com/BER2026-11">Zobacz ofertę</a>', msg)
-        self.assertIn("<b>Las Vegas (LAS) – listopad 2026</b>", msg)
+    def test_report(self):
+        prices = {("BER", "2026-11"): [(2600, 3, 14, 1)]}
+        self.run_scan(prices)
+        prices[("BER", "2026-11")] = [(2500, 3, 14, 0)]
+        alerts = self.run_scan(prices)
+        msg = format_report(make_cfg(), State(self.state_path), alerts, datetime(2026, 10, 19, 12, 1))
+        self.assertIn("<b>Raport lotów: Las Vegas (LAS)</b>", msg)
+        self.assertIn("19.10.2026, 12:01 · w obie strony, 7–21 dni", msg)
+        self.assertIn("🔥 <b>lis 2026</b>: 2 500 PLN · Berlin (BER) +150 dojazd · 03.11–17.11 (14 dni)", msg)
+        self.assertIn("bezpośredni", msg)
+        self.assertIn('<a href="https://example.com/BER2026-11">oferta</a> (-4%)', msg)
+        self.assertIn("Brak ofert: paź 2026", msg)
+
+        # cena wyżej niż minimum -> pokazujemy minimum, bez 🔥
+        prices[("BER", "2026-11")] = [(2900, 3, 14, 1)]
+        alerts = self.run_scan(prices)
+        msg = format_report(make_cfg(), State(self.state_path), alerts, datetime(2026, 10, 19, 15, 0))
+        self.assertNotIn("🔥", msg)
+        self.assertIn("przesiadki: 1", msg)
+        self.assertIn("min. dotąd 2 500", msg)
+
+    def test_month_ranges(self):
+        months = scan_months(date(2026, 10, 1), 12, until="2028-12")
+        empty = ["2026-10", "2027-01", "2027-02", "2027-03"] + months[months.index("2027-05"):]
+        self.assertEqual(_month_ranges(empty, months), "paź 2026, sty–mar 2027, maj 2027 – gru 2028")
+
+    def test_report_slot(self):
+        hours = [9, 12, 15, 18]
+        day = datetime(2026, 10, 19)
+        slot = lambda h, m: report_slot(day.replace(hour=h, minute=m), hours)
+        self.assertIsNone(slot(7, 45))
+        self.assertEqual(slot(8, 45), "2026-10-19 09")  # cron chwilę przed czasem
+        self.assertEqual(slot(9, 50), "2026-10-19 09")
+        self.assertEqual(slot(11, 45), "2026-10-19 12")
+        self.assertEqual(slot(17, 45), "2026-10-19 18")
+        self.assertEqual(slot(23, 50), "2026-10-19 18")
 
     def test_past_months_pruned(self):
         state = State(self.state_path)
@@ -180,11 +200,7 @@ class TelegramTest(unittest.TestCase):
 
 class SplitTest(unittest.TestCase):
     def test_split(self):
-        blocks = ["x" * 600] * 5
-        chunks = split_message("\n\n".join(blocks), limit=1500)
+        lines = ["x" * 600] * 15
+        chunks = split_message("\n".join(lines), limit=1500)
         self.assertTrue(all(len(c) <= 1500 for c in chunks))
-        self.assertEqual("\n\n".join(chunks), "\n\n".join(blocks))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        self.assertEqual("\n".join(chunks), "\n".join(lines))

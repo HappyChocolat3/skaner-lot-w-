@@ -2,8 +2,10 @@ name: Skan lotów
 
 on:
   schedule:
-    - cron: "17 */6 * * *"   # co 6 godzin (UTC)
-  workflow_dispatch:          # ręczne uruchomienie z zakładki Actions
+    # Raporty o 9, 12, 15 i 18 czasu polskiego. Cron działa w UTC, więc uruchamiamy
+    # o :45 w obu wariantach (czas letni i zimowy), a skrypt sam sprawdza, czy to pora raportu.
+    - cron: "45 6,7,9,10,12,13,15,16 * * *"
+  workflow_dispatch:          # ręczne uruchomienie z zakładki Actions = raport od razu
 
 permissions:
   contents: write             # zapis historii cen (data/state.json)
@@ -28,7 +30,7 @@ jobs:
           TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python -m skaner run
+        run: python -m skaner run ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}
 
       - name: Zapisz historię cen
         run: |
@@ -36,4 +38,4 @@ jobs:
           git config user.email "flight-scanner-bot@users.noreply.github.com"
           git add data/state.json
           git diff --cached --quiet || git commit -m "Aktualizacja cen lotów [skip ci]"
-          git push
+          git push || (git pull --rebase && git push)

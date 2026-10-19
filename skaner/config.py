@@ -11,6 +11,7 @@ class SearchConfig:
     destinations: list[str]
     origins: list[str]
     months_ahead: int = 12
+    until: str | None = None
     one_way: bool = False
     currency: str = "PLN"
     max_transfers: int | None = None
@@ -23,8 +24,9 @@ class SearchConfig:
 class NotifyConfig:
     channel: str = "console"
     min_drop_percent: float = 2.0
-    send_initial_summary: bool = True
     alert_below: float = 0
+    report_hours: list[int] = field(default_factory=lambda: [9, 12, 15, 18])
+    timezone: str = "Europe/Warsaw"
 
 
 @dataclass
@@ -51,6 +53,7 @@ def load_config(path: str | Path) -> Config:
         destinations=[c.upper() for c in s.get("destinations", [])],
         origins=origins,
         months_ahead=int(s.get("months_ahead", 12)),
+        until=s.get("until"),
         one_way=bool(s.get("one_way", False)),
         currency=s.get("currency", "PLN").upper(),
         max_transfers=s.get("max_transfers"),
@@ -65,8 +68,9 @@ def load_config(path: str | Path) -> Config:
     notify = NotifyConfig(
         channel=n.get("channel", "console"),
         min_drop_percent=float(n.get("min_drop_percent", 2)),
-        send_initial_summary=bool(n.get("send_initial_summary", True)),
         alert_below=float(n.get("alert_below", 0)),
+        report_hours=sorted(int(h) for h in n.get("report_hours", [9, 12, 15, 18])),
+        timezone=n.get("timezone", "Europe/Warsaw"),
     )
 
     p = dict(raw.get("provider", {}))

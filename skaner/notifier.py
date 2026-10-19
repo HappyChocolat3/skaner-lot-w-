@@ -71,19 +71,19 @@ def build_notifier(channel: str) -> Notifier:
 
 
 def split_message(text: str, limit: int = MAX_LEN) -> list[str]:
-    """Dzieli tekst na części po pustych liniach (bloki ofert), nie przekraczając limitu."""
+    """Dzieli tekst na części po pełnych liniach, nie przekraczając limitu (nie rozcina tagów HTML)."""
     chunks, current = [], ""
-    for block in text.split("\n\n"):
-        candidate = f"{current}\n\n{block}" if current else block
+    for line in text.split("\n"):
+        candidate = f"{current}\n{line}" if current else line
         if len(candidate) <= limit:
             current = candidate
             continue
         if current:
-            chunks.append(current)
-        while len(block) > limit:
-            chunks.append(block[:limit])
-            block = block[limit:]
-        current = block
-    if current:
-        chunks.append(current)
+            chunks.append(current.strip("\n"))
+        while len(line) > limit:
+            chunks.append(line[:limit])
+            line = line[limit:]
+        current = line
+    if current.strip():
+        chunks.append(current.strip("\n"))
     return chunks
