@@ -1,7 +1,8 @@
 """CLI skanera.
 
-  python -m skaner run              # jeden skan (np. z crona / GitHub Actions)
-  python -m skaner loop --hours 6   # działa w tle i skanuje co N godzin
+  python -m skaner run              # skan + raport, jeśli wypada godzina raportu (np. z crona)
+  python -m skaner run --force      # skan + raport od razu
+  python -m skaner loop             # działa w tle i wysyła raporty o godzinach z configu
   python -m skaner airports         # lista obsługiwanych lotnisk
   python -m skaner test-notify      # wysyła testową wiadomość na Telegram
   python -m skaner telegram-chat-id # pokazuje chat_id (najpierw napisz coś do bota)
@@ -12,12 +13,14 @@ import logging
 import os
 import sys
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from .airports import AIRPORTS
 from .config import load_config
 from .notifier import build_notifier, telegram_chat_ids
 from .providers import build_provider
-from .scanner import format_alerts, scan
+from .scanner import format_report, report_slot, scan
 from .storage import State
 
 log = logging.getLogger("skaner")
@@ -27,19 +30,23 @@ def run_once(args) -> int:
     cfg = load_config(args.config)
     if args.dest:
         cfg.search.destinations = [d.upper() for d in args.dest]
+    state = State(args.state)
+    now = datetime.now(ZoneInfo(cfg.notify.timezone))
+    slot = report_slot(now, cfg.notify.report_hours)
+    force = args.force or args.dry_run
+    if not force and (slot is None or state.data.get("last_report") == slot):
+        log.info("Nie pora na raport (%s), pomijam skan", now.strftime("%H:%M"))
+        return 0
+
     notifier = build_notifier("console" if args.dry_run else cfg.notify.channel)
     provider = build_provider(cfg.provider_name, cfg.provider_settings)
-    state = State(args.state)
-
-    alerts = scan(cfg, provider, state)
-    message = format_alerts(alerts)
-    if message:
-        # najpierw wysyłka, potem zapis – jeśli wysyłka padnie, alert zostanie ponowiony
-        notifier.send(message)
-        log.info("Wysłano %d powiadomień", len(alerts))
-    else:
-        log.info("Brak nowych najniższych cen")
+    alerts = scan(cfg, provider, state, today=now.date())
+    # najpierw wysyłka, potem zapis – jeśli wysyłka padnie, raport zostanie ponowiony
+    notifier.send(format_report(cfg, state, alerts, now))
+    log.info("Wysłano raport (%d nowych minimów)", len(alerts))
     if not args.dry_run:
+        if slot:
+            state.data["last_report"] = slot
         state.save()
     return 0
 
@@ -55,7 +62,8 @@ def main(argv=None) -> int:
         p = sub.add_parser(name)
         p.add_argument("--dest", nargs="+", help="nadpisz cele z configu, np. --dest LAS JFK")
         p.add_argument("--dry-run", action="store_true", help="wypisz zamiast wysyłać, nie zapisuj stanu")
-    sub.choices["loop"].add_argument("--hours", type=float, default=6)
+        p.add_argument("--force", action="store_true", help="wyślij raport niezależnie od godziny")
+    sub.choices["loop"].add_argument("--minutes", type=float, default=10, help="co ile minut sprawdzać godzinę")
     sub.add_parser("airports")
     sub.add_parser("test-notify")
     sub.add_parser("telegram-chat-id")
@@ -88,7 +96,8 @@ def main(argv=None) -> int:
             run_once(args)
         except Exception:
             log.exception("Skan nie powiódł się, spróbuję ponownie przy następnym cyklu")
-        time.sleep(args.hours * 3600)
+        args.force = False  # --force dotyczy tylko pierwszego przebiegu
+        time.sleep(args.minutes * 60)
 
 
 if __name__ == "__main__":

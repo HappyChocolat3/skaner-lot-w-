@@ -2,29 +2,35 @@
 
 Skaner najtańszych lotów, który działa w tle. Sprawdza ceny lotów z polskich lotnisk
 (oraz przygranicznych w Czechach i Niemczech) do wybranego celu, domyślnie **Las Vegas (LAS)**.
-Gdy cena na któryś miesiąc spadnie do nowego minimum, wysyła powiadomienie na **Telegram**.
+Codziennie o **9, 12, 15 i 18** wysyła na **Telegram** raport z najtańszą ceną na każdy
+miesiąc (do grudnia 2028) i oznacza 🔥 miesiące, w których cena spadła do nowego minimum.
 
-Przykładowe powiadomienie:
+Przykładowy raport:
 
 ```
-✈️ Nowe najniższe ceny lotów!
+✈️ Raport lotów: Las Vegas (LAS)
+19.10.2026, 12:03 · w obie strony, 7–21 dni
+🔥 = nowa najniższa cena
 
-Las Vegas (LAS) – listopad 2026: 2 499 PLN (-7% względem poprzedniego minimum)
-Wylot Berlin (BER) 2026-11-03, powrót 2026-11-15 (12 dni)
-Przesiadki: 1/1, linia: LO
-Z dojazdem na lotnisko: ~2 649 PLN
-Zobacz ofertę
+🔥 lis 2026: 2 499 PLN · Berlin (BER) +150 dojazd · 03.11–15.11 (12 dni) · przesiadki: 1 · oferta (-7%)
+gru 2026: 2 681 PLN · Berlin (BER) +150 dojazd · 01.12–10.12 (9 dni) · przesiadki: 1 · oferta
+kwi 2027: 2 878 PLN · Warszawa Chopin (WAW) · 01.04–11.04 (10 dni) · przesiadki: 1 · oferta · min. dotąd 2 700
+
+Brak ofert: paź 2026, sty–mar 2027, maj 2027 – gru 2028
 ```
 
 ## Jak to działa
 
-1. Co 6 godzin (GitHub Actions) skaner pyta o ceny dla każdej pary *lotnisko wylotu → cel*
-   na każdy z najbliższych 12 miesięcy.
+1. O 9, 12, 15 i 18 czasu polskiego (GitHub Actions) skaner pyta o ceny dla każdej pary
+   *lotnisko wylotu → cel* na każdy miesiąc do `until` (domyślnie grudzień 2028).
+   Linie sprzedają bilety ok. 11–12 miesięcy do przodu, więc dalsze miesiące pojawią się
+   w raporcie, gdy tylko ruszy sprzedaż.
 2. Odrzuca oferty niespełniające filtrów: liczby przesiadek i długości pobytu.
 3. Dla każdego miesiąca wybiera najtańszą ofertę. Przy porównaniu dolicza koszt dojazdu
    do lotnisk zagranicznych (`extra_cost`).
 4. Porównuje ją z historią w `data/state.json`. Jeśli to nowe minimum, niższe o co najmniej
-   `min_drop_percent` od ostatnio zgłoszonej ceny, wysyła wiadomość na Telegram.
+   `min_drop_percent` od ostatnio oznaczonej ceny, oznacza miesiąc w raporcie 🔥.
+5. Wysyła raport na Telegram.
 
 **Źródło cen:** [Travelpayouts / Aviasales Data API](https://www.travelpayouts.com/).
 Jest darmowe i zbiera ceny z wyszukiwań w setkach linii lotniczych i agencji.
@@ -61,9 +67,9 @@ i dodaj sekrety:
 | `TELEGRAM_CHAT_ID` | id czatu z kroku 2 |
 
 Workflow `.github/workflows/scan.yml` musi być na domyślnej gałęzi (`main`).
-Uruchamia się wtedy co 6 godzin. Pierwszy skan możesz odpalić ręcznie:
-*Actions → Skan lotów → Run workflow*. Przy pierwszym skanie przyjdzie podsumowanie
-najtańszych cen na każdy miesiąc, a później tylko nowe minima.
+Raporty przychodzą wtedy o 9, 12, 15 i 18. GitHub czasem opóźnia zaplanowane zadania,
+więc raport może przyjść kilkanaście–kilkadziesiąt minut później. Raport na żądanie:
+*Actions → Skan lotów → Run workflow*.
 
 ### Alternatywa: uruchomienie lokalnie (Python 3.11+, bez dodatkowych bibliotek)
 
@@ -74,8 +80,8 @@ export TELEGRAM_CHAT_ID=...
 
 python -m skaner test-notify          # testowa wiadomość na Telegram
 python -m skaner run --dry-run        # skan bez wysyłki (wynik w konsoli)
-python -m skaner run                  # jeden skan
-python -m skaner loop --hours 6       # działa w tle, skan co 6 godzin
+python -m skaner run --force          # skan i raport od razu
+python -m skaner loop                 # działa w tle, raporty o godzinach z configu
 ```
 
 ## Dostosowanie (`config.toml`)
@@ -86,8 +92,11 @@ python -m skaner loop --hours 6       # działa w tle, skan co 6 godzin
 - **Lot w jedną stronę:** `one_way = true`.
 - **Filtry:** `max_transfers`, `min_trip_days`, `max_trip_days`.
 - **Koszt dojazdu** do lotnisk w CZ/DE: sekcja `[search.extra_cost]`.
-- **Czułość powiadomień:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli
-  powiadomienie, gdy cena spadnie poniżej podanej kwoty.
+- **Zakres miesięcy:** `until = "2028-12"` albo `months_ahead = 12`.
+- **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
+  `cron` w `.github/workflows/scan.yml` (godziny w UTC, uruchamiane ok. 15 minut przed raportem).
+- **Oznaczenie 🔥:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli oznaczenie,
+  gdy cena spadnie poniżej podanej kwoty.
 
 ## Testy
 

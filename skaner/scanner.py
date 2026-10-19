@@ -1,10 +1,10 @@
-"""Główna logika: pobiera ceny, wybiera najtańszą ofertę na miesiąc i decyduje o powiadomieniu."""
+"""Główna logika: pobiera ceny, wybiera najtańszą ofertę na miesiąc i buduje raport."""
 
 import html
 import logging
 import time
 from dataclasses import dataclass
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from .airports import describe
 from .config import Config
@@ -14,24 +14,22 @@ from .storage import State
 
 log = logging.getLogger(__name__)
 
-MONTHS_PL = [
-    "styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec",
-    "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień",
-]
+MONTHS_SHORT = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"]
 
 
 @dataclass
 class Alert:
-    kind: str  # "first" | "drop" | "below"
+    kind: str  # "drop" | "below"
     destination: str
     month: str
     offer: dict
     previous: float | None = None
 
 
-def months_from(today: date, count: int) -> list[str]:
+def scan_months(today: date, months_ahead: int, until: str | None = None) -> list[str]:
+    """Miesiące od bieżącego: do `until` (YYYY-MM) włącznie albo `months_ahead` sztuk."""
     result, y, m = [], today.year, today.month
-    for _ in range(count):
+    while (until and f"{y:04d}-{m:02d}" <= until) or (not until and len(result) < months_ahead):
         result.append(f"{y:04d}-{m:02d}")
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
     return result
@@ -57,8 +55,7 @@ def effective_price(offer: Offer, cfg: Config) -> float:
 def scan(cfg: Config, provider: Provider, state: State, today: date | None = None,
          request_delay: float = 0.2) -> list[Alert]:
     today = today or date.today()
-    first_run = state.is_empty
-    months = months_from(today, cfg.search.months_ahead)
+    months = scan_months(today, cfg.search.months_ahead, cfg.search.until)
     state.prune_before(months[0])
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     alerts: list[Alert] = []
@@ -87,7 +84,7 @@ def scan(cfg: Config, provider: Provider, state: State, today: date | None = Non
             record = best.to_dict() | {"effective_price": effective_price(best, cfg), "found_at": now}
             entry["current"] = record
             entry["checked_at"] = now
-            alert = _decide(cfg, entry, record, dest, month, first_run)
+            alert = _decide(cfg, entry, record, dest, month)
             if alert:
                 alerts.append(alert)
             log.info("%s %s: %.0f %s z %s", dest, month, best.price, best.currency, best.origin)
@@ -95,16 +92,14 @@ def scan(cfg: Config, provider: Provider, state: State, today: date | None = Non
     return alerts
 
 
-def _decide(cfg: Config, entry: dict, record: dict, dest: str, month: str, first_run: bool) -> Alert | None:
+def _decide(cfg: Config, entry: dict, record: dict, dest: str, month: str) -> Alert | None:
+    """Aktualizuje minimum dla miesiąca; zwraca Alert, gdy cena spadła wyraźnie."""
     eff = record["effective_price"]
     prev_best = entry.get("best")
 
     if prev_best is None:
         entry["best"] = record
         entry["last_alert_price"] = eff
-        # nowy miesiąc, który wszedł w okno skanowania, zgłaszamy zawsze
-        if cfg.notify.send_initial_summary or not first_run:
-            return Alert("first", dest, month, record)
         return None
 
     prev_eff = prev_best["effective_price"]
@@ -122,48 +117,100 @@ def _decide(cfg: Config, entry: dict, record: dict, dest: str, month: str, first
     return None
 
 
-def month_label(month: str) -> str:
+def report_slot(now: datetime, hours: list[int]) -> str | None:
+    """Ostatnia godzina raportu, która już nadeszła dziś, np. '2026-10-19 12'.
+
+    Do `now` dodajemy kilka minut zapasu, bo GitHub Actions uruchamia się chwilę przed pełną godziną.
+    """
+    shifted = now + timedelta(minutes=20)
+    if shifted.date() != now.date():
+        shifted = now
+    passed = [h for h in hours if h <= shifted.hour]
+    return f"{now.date().isoformat()} {max(passed):02d}" if passed else None
+
+
+def format_report(cfg: Config, state: State, alerts: list[Alert], now: datetime) -> str:
+    months = scan_months(now.date(), cfg.search.months_ahead, cfg.search.until)
+    drops = {(a.destination, a.month): a for a in alerts}
+    s = cfg.search
+    trip = "w jedną stronę" if s.one_way else "w obie strony"
+    if not s.one_way and (s.min_trip_days or s.max_trip_days):
+        trip += f", {s.min_trip_days or 1}–{s.max_trip_days or '∞'} dni"
+
+    sections = []
+    for dest in s.destinations:
+        lines = [
+            f"✈️ <b>Raport lotów: {html.escape(describe(dest))}</b>",
+            f"{now.strftime('%d.%m.%Y, %H:%M')} · {trip}",
+        ]
+        if any(d == dest for d, _ in drops):
+            lines.append("🔥 = nowa najniższa cena")
+        lines.append("")
+        empty = []
+        for month in months:
+            entry = state.data["routes"].get(dest, {}).get(month, {})
+            current = entry.get("current")
+            if not current:
+                empty.append(month)
+                continue
+            lines.append(_format_month(month, current, entry.get("best"), drops.get((dest, month))))
+        if len(empty) == len(months):
+            lines.append("Brak ofert na żaden miesiąc.")
+        elif empty:
+            lines.append("")
+            lines.append("Brak ofert: " + _month_ranges(empty, months))
+        sections.append("\n".join(lines))
+    return "\n\n".join(sections)
+
+
+def _format_month(month: str, o: dict, best: dict | None, alert: Alert | None) -> str:
+    dep = date.fromisoformat(o["departure_date"])
+    when = dep.strftime("%d.%m")
+    if o.get("return_date"):
+        ret = date.fromisoformat(o["return_date"])
+        when += f"–{ret.strftime('%d.%m')} ({(ret - dep).days} dni)"
+    origin = html.escape(describe(o["origin"]))
+    extra = o["effective_price"] - o["price"]
+    if extra:
+        origin += f" +{_fmt(extra)} dojazd"
+    line = f"<b>{_short_month(month)}</b>: {_fmt(o['price'])} {o['currency']} · {origin} · {when}"
+    transfers = max(o.get("transfers", 0), o.get("return_transfers", 0))
+    line += " · bezpośredni" if transfers == 0 else f" · przesiadki: {transfers}"
+    if o.get("link"):
+        line += f' · <a href="{html.escape(o["link"])}">oferta</a>'
+    if alert:
+        pct = (alert.previous - o["effective_price"]) / alert.previous * 100
+        line = f"🔥 {line} (-{pct:.0f}%)"
+    elif best and best["effective_price"] < o["effective_price"]:
+        line += f" · min. dotąd {_fmt(best['price'])}"
+    return line
+
+
+def _month_ranges(selected: list[str], months: list[str]) -> str:
+    """['2027-01','2027-02','2027-03','2027-05'] -> 'sty–mar 2027, maj 2027'."""
+    runs, prev_idx = [], None
+    for m in selected:
+        idx = months.index(m)
+        if prev_idx is not None and idx == prev_idx + 1:
+            runs[-1][1] = m
+        else:
+            runs.append([m, m])
+        prev_idx = idx
+    parts = []
+    for start, end in runs:
+        if start == end:
+            parts.append(_short_month(start))
+        elif start[:4] == end[:4]:
+            parts.append(f"{_short_month(start).split()[0]}–{_short_month(end)}")
+        else:
+            parts.append(f"{_short_month(start)} – {_short_month(end)}")
+    return ", ".join(parts)
+
+
+def _short_month(month: str) -> str:
     y, m = month.split("-")
-    return f"{MONTHS_PL[int(m) - 1]} {y}"
+    return f"{MONTHS_SHORT[int(m) - 1]} {y}"
 
 
 def _fmt(amount: float) -> str:
     return f"{amount:,.0f}".replace(",", " ")
-
-
-def format_alerts(alerts: list[Alert]) -> str:
-    if not alerts:
-        return ""
-    drops = [a for a in alerts if a.kind != "first"]
-    firsts = [a for a in alerts if a.kind == "first"]
-    parts = []
-    if drops:
-        parts.append("✈️ <b>Nowe najniższe ceny lotów!</b>")
-        parts += [_format_one(a) for a in sorted(drops, key=lambda a: (a.destination, a.month))]
-    if firsts:
-        parts.append("📋 <b>Najtańsze loty na poszczególne miesiące</b>")
-        parts += [_format_one(a) for a in sorted(firsts, key=lambda a: (a.destination, a.month))]
-    return "\n\n".join(parts)
-
-
-def _format_one(a: Alert) -> str:
-    o = a.offer
-    cur = o["currency"]
-    dest = html.escape(describe(a.destination))
-    head = f"<b>{dest} – {month_label(a.month)}</b>: {_fmt(o['price'])} {cur}"
-    if a.previous:
-        pct = (a.previous - o["effective_price"]) / a.previous * 100
-        head += f" (-{pct:.0f}% względem poprzedniego minimum)"
-    lines = [head]
-    dep = f"Wylot {html.escape(describe(o['origin']))} {o['departure_date']}"
-    if o.get("return_date"):
-        days = (date.fromisoformat(o["return_date"]) - date.fromisoformat(o["departure_date"])).days
-        dep += f", powrót {o['return_date']} ({days} dni)"
-    lines.append(dep)
-    transfers = f"{o['transfers']}" + (f"/{o['return_transfers']}" if o.get("return_date") else "")
-    lines.append(f"Przesiadki: {transfers}" + (f", linia: {html.escape(o['airline'])}" if o.get("airline") else ""))
-    if o["effective_price"] != o["price"]:
-        lines.append(f"Z dojazdem na lotnisko: ~{_fmt(o['effective_price'])} {cur}")
-    if o.get("link"):
-        lines.append(f'<a href="{html.escape(o["link"])}">Zobacz ofertę</a>')
-    return "\n".join(lines)
