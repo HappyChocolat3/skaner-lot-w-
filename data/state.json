@@ -1,9 +1,9 @@
 {
-  "last_report": "2026-10-19 15",
+  "last_report": "2026-10-19 18",
   "routes": {
     "LAS": {
       "2026-10": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2026-11": {
@@ -22,14 +22,14 @@
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2026-11-24",
           "destination": "LAS",
           "effective_price": 2992.0,
-          "found_at": "2026-10-19T14:58:03+00:00",
+          "found_at": "2026-10-19T20:42:26+00:00",
           "link": "https://www.aviasales.com/search/BER2411LAS01121?t=AA17955012001795549140001339BERLHRORDLAS17961415201796238000001068LASLAXLHRBER_5cc193114105fa3e89e86e061c5ab74f_61148&search_date=15102026&expected_price_uuid=01a14013-e284-8030-2783-b7550513cb96&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=efMhjXF8zFsWUARF1qvtfg&expected_price_source=share&expected_price_currency=pln&expected_price=2842",
           "origin": "BER",
           "price": 2842.0,
@@ -56,7 +56,7 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null,
         "last_alert_price": 2831.0
       },
@@ -76,17 +76,17 @@
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": {
           "airline": "LH",
           "currency": "PLN",
           "departure_date": "2027-01-02",
           "destination": "LAS",
-          "effective_price": 5698.0,
-          "found_at": "2026-10-19T14:58:03+00:00",
-          "link": "https://www.aviasales.com/search/WAW0201LAS13011?t=AC17988714001798930020001517WAWFRAYYZLAS17998428001799934900000995LASYYZFRAWAW_d711d37e0c8af2aa7a49a0229d0469ff_123256&search_date=19102026&expected_price_uuid=01a1528e-7024-8031-2371-e3d798842c38&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EYzeK3VOMcA54BSD1hNDbg&expected_price_source=share&expected_price_currency=pln&expected_price=5698",
+          "effective_price": 5699.0,
+          "found_at": "2026-10-19T20:42:26+00:00",
+          "link": "https://www.aviasales.com/search/WAW0201LAS13011?t=AC17988714001798930020001517WAWFRAYYZLAS17998428001799934900000995LASYYZFRAWAW_d711d37e0c8af2aa7a49a0229d0469ff_123256&search_date=19102026&expected_price_uuid=01a1528e-7024-8031-2371-e3d798842c38&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EYzeK3VOMcA54BSD1hNDbg&expected_price_source=share&expected_price_currency=pln&expected_price=5699",
           "origin": "WAW",
-          "price": 5698.0,
+          "price": 5699.0,
           "return_date": "2027-01-13",
           "return_transfers": 2,
           "source": "travelpayouts",
@@ -95,11 +95,11 @@
         "last_alert_price": 5695.0
       },
       "2027-02": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-03": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-04": {
@@ -118,14 +118,14 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2027-04-01",
           "destination": "LAS",
           "effective_price": 3028.0,
-          "found_at": "2026-10-19T14:58:03+00:00",
+          "found_at": "2026-10-19T20:42:26+00:00",
           "link": "https://www.aviasales.com/search/BER0104LAS11041?t=BA18065829001806609600000985BERLHRLAS18074814001807568400000910LASLHRBER_8c38a7700f45f22f1418b55b3dec64fe_61944&search_date=14102026&expected_price_uuid=01a13839-c9cc-8030-2950-d710061dabff&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tledY49vVA5IX5OzowVzuw&expected_price_source=share&expected_price_currency=pln&expected_price=2878",
           "origin": "BER",
           "price": 2878.0,
@@ -137,83 +137,83 @@
         "last_alert_price": 3028.0
       },
       "2027-05": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-06": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-08": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-10-19T14:58:03+00:00",
+        "checked_at": "2026-10-19T20:42:26+00:00",
         "current": null
       }
     }
