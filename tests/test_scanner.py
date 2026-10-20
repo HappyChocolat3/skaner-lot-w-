@@ -64,6 +64,10 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(scan_months(date(2026, 11, 5), 3), ["2026-11", "2026-12", "2027-01"])
         months = scan_months(date(2026, 10, 19), 12, until="2028-12")
         self.assertEqual((months[0], months[-1], len(months)), ("2026-10", "2028-12", 27))
+        months = scan_months(date(2026, 10, 19), 12, until="2028-12", since="2027-06")
+        self.assertEqual((months[0], months[-1], len(months)), ("2027-06", "2028-12", 19))
+        # gdy "since" już minął, liczymy od bieżącego miesiąca
+        self.assertEqual(scan_months(date(2027, 8, 1), 12, until="2027-09", since="2027-06"), ["2027-08", "2027-09"])
 
     def test_only_real_drops_are_flagged(self):
         prices = {("WAW", "2026-10"): [(3000, 20, 10, 1)], ("WAW", "2026-11"): [(2800, 5, 14, 1)]}
@@ -131,7 +135,7 @@ class ScannerTest(unittest.TestCase):
         alerts = self.run_scan(prices)
         msg = format_report(make_cfg(), State(self.state_path), alerts, datetime(2026, 10, 19, 12, 1))
         self.assertIn("<b>Raport lotów: Las Vegas (LAS)</b>", msg)
-        self.assertIn("19.10.2026, 12:01 · w obie strony, 7–21 dni", msg)
+        self.assertIn("19.10.2026, 12:01 · w obie strony, 7–21 dni, paź 2026 – lis 2026", msg)
         self.assertIn("1. 🔥 <b>lis 2026</b>: 2 500 PLN · Berlin (BER) +150 dojazd · 03.11–17.11 (14 dni)", msg)
         self.assertIn("bezpośredni", msg)
         self.assertIn('<a href="https://example.com/BER2026-11">oferta</a> (-4%)', msg)

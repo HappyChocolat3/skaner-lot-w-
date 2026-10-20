@@ -3,19 +3,20 @@
 Skaner najtańszych lotów, który działa w tle. Sprawdza ceny lotów z polskich lotnisk
 (oraz przygranicznych w Czechach i Niemczech) do wybranego celu, domyślnie **Las Vegas (LAS)**.
 Codziennie o **9, 12, 15 i 18** wysyła na **Telegram** raport z 3 najtańszymi ofertami
-dla każdego wybranego kierunku (pełna lista miesięcy do grudnia 2028 jest na stronie).
+dla każdego wybranego kierunku, z wylotem od czerwca 2027 do grudnia 2028 (pełna lista
+miesięcy jest na stronie).
 🔥 oznacza nową najniższą cenę.
 
 Przykładowy raport:
 
 ```
 ✈️ Raport lotów: Las Vegas (LAS)
-20.10.2026, 18:00 · w obie strony, 10–15 dni
+20.10.2026, 18:00 · w obie strony, 10–15 dni, cze 2027 – gru 2028
 
-1. gru 2026: 2 621 PLN · Berlin (BER) +150 dojazd · 01.12–10.12 (9 dni) · przesiadki: 1 · oferta
-2. lis 2026: 2 842 PLN · Berlin (BER) +150 dojazd · 24.11–01.12 (7 dni) · przesiadki: 2 · oferta
-3. kwi 2027: 2 878 PLN · Berlin (BER) +150 dojazd · 01.04–11.04 (10 dni) · przesiadki: 1 · oferta
-…i 1 droższy miesiąc na stronie
+1. cze 2027: 2 752 PLN · Berlin (BER) +150 dojazd · 06.06–16.06 (10 dni) · przesiadki: 1 · oferta
+2. lip 2027: 2 812 PLN · Warszawa Chopin (WAW) · 03.07–15.07 (12 dni) · przesiadki: 1 · oferta
+3. wrz 2027: 3 040 PLN · Warszawa Chopin (WAW) · 21.09–05.10 (14 dni) · przesiadki: 1 · oferta
+…i 2 droższe miesiące na stronie
 ```
 
 ## Jak to działa
@@ -110,7 +111,7 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 - **Lot w jedną stronę:** `one_way = true`.
 - **Filtry:** `max_transfers`, `min_trip_days`, `max_trip_days`.
 - **Koszt dojazdu** do lotnisk w CZ/DE: sekcja `[search.extra_cost]`.
-- **Zakres miesięcy:** `until = "2028-12"` albo `months_ahead = 12`.
+- **Zakres miesięcy:** `since = "2027-06"` (od kiedy) i `until = "2028-12"` (do kiedy) albo `months_ahead = 12`.
 - **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
   `cron` w `.github/workflows/scan.yml` (godziny w UTC; workflow startuje co 10 minut i sam
   sprawdza, czy to pora raportu).

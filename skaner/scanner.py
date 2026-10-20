@@ -27,9 +27,13 @@ class Alert:
     previous: float | None = None
 
 
-def scan_months(today: date, months_ahead: int, until: str | None = None) -> list[str]:
-    """Miesiące od bieżącego: do `until` (YYYY-MM) włącznie albo `months_ahead` sztuk."""
-    result, y, m = [], today.year, today.month
+def scan_months(today: date, months_ahead: int, until: str | None = None, since: str | None = None) -> list[str]:
+    """Miesiące od bieżącego (albo od `since`, jeśli później): do `until` (YYYY-MM) włącznie
+    albo `months_ahead` sztuk."""
+    y, m = today.year, today.month
+    if since and since > f"{y:04d}-{m:02d}":
+        y, m = map(int, since.split("-"))
+    result = []
     while (until and f"{y:04d}-{m:02d}" <= until) or (not until and len(result) < months_ahead):
         result.append(f"{y:04d}-{m:02d}")
         y, m = (y + 1, 1) if m == 12 else (y, m + 1)
@@ -56,7 +60,7 @@ def effective_price(offer: Offer, cfg: Config) -> float:
 def scan(cfg: Config, provider: Provider, state: State, today: date | None = None,
          request_delay: float = 0.2) -> list[Alert]:
     today = today or date.today()
-    months = scan_months(today, cfg.search.months_ahead, cfg.search.until)
+    months = scan_months(today, cfg.search.months_ahead, cfg.search.until, cfg.search.since)
     state.prune_before(months[0])
     _reset_minima_if_filters_changed(cfg, state)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -151,12 +155,14 @@ def report_slot(now: datetime, hours: list[int], early_minutes: int = 5, max_lat
 
 
 def format_report(cfg: Config, state: State, alerts: list[Alert], now: datetime) -> str:
-    months = scan_months(now.date(), cfg.search.months_ahead, cfg.search.until)
+    months = scan_months(now.date(), cfg.search.months_ahead, cfg.search.until, cfg.search.since)
     drops = {(a.destination, a.month): a for a in alerts}
     s = cfg.search
     trip = "w jedną stronę" if s.one_way else "w obie strony"
     if not s.one_way and (s.min_trip_days or s.max_trip_days):
         trip += f", {s.min_trip_days or 1}–{s.max_trip_days or '∞'} dni"
+    if months:
+        trip += f", {_short_month(months[0])} – {_short_month(months[-1])}"
 
     sections = []
     for dest in s.destinations:
