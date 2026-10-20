@@ -27,8 +27,8 @@ currency = "PLN"
 
 # Filtry – usuń linię, żeby wyłączyć
 max_transfers = 2      # maks. przesiadek w jedną stronę (0 = tylko bezpośrednie)
-min_trip_days = 7      # min. długość pobytu w dniach (tylko loty w obie strony)
-max_trip_days = 21     # maks. długość pobytu w dniach
+min_trip_days = 10     # min. długość pobytu w dniach (tylko loty w obie strony)
+max_trip_days = 15     # maks. długość pobytu w dniach
 
 # Dodatkowy koszt dojazdu do lotniska (PLN). Uwzględniany przy porównaniu,
 # żeby np. lot z Berlina tańszy o 50 zł nie wygrywał z lotem z Warszawy.
