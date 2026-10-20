@@ -58,6 +58,7 @@ def scan(cfg: Config, provider: Provider, state: State, today: date | None = Non
     today = today or date.today()
     months = scan_months(today, cfg.search.months_ahead, cfg.search.until)
     state.prune_before(months[0])
+    _reset_minima_if_filters_changed(cfg, state)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     alerts: list[Alert] = []
 
@@ -91,6 +92,23 @@ def scan(cfg: Config, provider: Provider, state: State, today: date | None = Non
             log.info("%s %s: %.0f %s z %s", dest, month, best.price, best.currency, best.origin)
 
     return alerts
+
+
+def _filters_signature(cfg: Config) -> str:
+    s = cfg.search
+    return f"one_way={s.one_way};transfers={s.max_transfers};days={s.min_trip_days}-{s.max_trip_days};{s.currency}"
+
+
+def _reset_minima_if_filters_changed(cfg: Config, state: State) -> None:
+    """Po zmianie filtrów stare minima nie są porównywalne z nowymi ofertami – zaczynamy od nowa."""
+    sig = _filters_signature(cfg)
+    if state.data.get("filters") != sig and state.data["routes"]:
+        for months in state.data["routes"].values():
+            for entry in months.values():
+                entry.pop("best", None)
+                entry.pop("last_alert_price", None)
+        log.info("Zmienione filtry (%s) – resetuję zapamiętane minima", sig)
+    state.data["filters"] = sig
 
 
 def _decide(cfg: Config, entry: dict, record: dict, dest: str, month: str) -> Alert | None:

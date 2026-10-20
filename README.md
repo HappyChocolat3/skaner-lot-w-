@@ -10,7 +10,7 @@ Przykładowy raport:
 
 ```
 ✈️ Raport lotów: Las Vegas (LAS)
-20.10.2026, 18:00 · w obie strony, 7–21 dni
+20.10.2026, 18:00 · w obie strony, 10–15 dni
 
 1. gru 2026: 2 621 PLN · Berlin (BER) +150 dojazd · 01.12–10.12 (9 dni) · przesiadki: 1 · oferta
 2. lis 2026: 2 842 PLN · Berlin (BER) +150 dojazd · 24.11–01.12 (7 dni) · przesiadki: 2 · oferta

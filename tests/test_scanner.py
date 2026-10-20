@@ -88,6 +88,17 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(data["routes"]["LAS"]["2026-11"]["best"]["price"], 2700)
         self.assertEqual(data["routes"]["LAS"]["2026-11"]["current"]["price"], 3500)
 
+    def test_filter_change_resets_minima(self):
+        prices = {("WAW", "2026-11"): [(2000, 5, 8, 1), (2600, 5, 12, 1)]}
+        self.run_scan(prices)
+        self.assertEqual(State(self.state_path).data["routes"]["LAS"]["2026-11"]["best"]["price"], 2000)
+
+        cfg = make_cfg()
+        cfg.search.min_trip_days, cfg.search.max_trip_days = 10, 15
+        self.run_scan(prices, cfg)
+        entry = State(self.state_path).data["routes"]["LAS"]["2026-11"]
+        self.assertEqual((entry["best"]["price"], entry["current"]["price"]), (2600, 2600))
+
     def test_extra_cost_and_filters(self):
         prices = {
             # BER tańszy o 100, ale z dojazdem (150) droższy
