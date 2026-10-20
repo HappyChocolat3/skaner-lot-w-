@@ -13,7 +13,7 @@ from skaner.models import Offer
 from skaner.notifier import TelegramNotifier, split_message
 from skaner.providers.base import Provider
 from skaner.providers.travelpayouts import TravelpayoutsProvider
-from skaner.scanner import _month_ranges, format_report, report_slot, scan, scan_months
+from skaner.scanner import format_report, report_slot, scan, scan_months
 from skaner.storage import State
 
 TODAY = date(2026, 10, 18)
@@ -121,10 +121,9 @@ class ScannerTest(unittest.TestCase):
         msg = format_report(make_cfg(), State(self.state_path), alerts, datetime(2026, 10, 19, 12, 1))
         self.assertIn("<b>Raport lotów: Las Vegas (LAS)</b>", msg)
         self.assertIn("19.10.2026, 12:01 · w obie strony, 7–21 dni", msg)
-        self.assertIn("🔥 <b>lis 2026</b>: 2 500 PLN · Berlin (BER) +150 dojazd · 03.11–17.11 (14 dni)", msg)
+        self.assertIn("1. 🔥 <b>lis 2026</b>: 2 500 PLN · Berlin (BER) +150 dojazd · 03.11–17.11 (14 dni)", msg)
         self.assertIn("bezpośredni", msg)
         self.assertIn('<a href="https://example.com/BER2026-11">oferta</a> (-4%)', msg)
-        self.assertIn("Brak ofert: paź 2026", msg)
 
         # cena wyżej niż minimum -> pokazujemy minimum, bez 🔥
         prices[("BER", "2026-11")] = [(2900, 3, 14, 1)]
@@ -134,10 +133,24 @@ class ScannerTest(unittest.TestCase):
         self.assertIn("przesiadki: 1", msg)
         self.assertIn("min. dotąd 2 500", msg)
 
-    def test_month_ranges(self):
-        months = scan_months(date(2026, 10, 1), 12, until="2028-12")
-        empty = ["2026-10", "2027-01", "2027-02", "2027-03"] + months[months.index("2027-05"):]
-        self.assertEqual(_month_ranges(empty, months), "paź 2026, sty–mar 2027, maj 2027 – gru 2028")
+    def test_report_shows_only_cheapest(self):
+        prices = {
+            ("WAW", "2026-10"): [(4000, 20, 10, 1)],
+            ("WAW", "2026-11"): [(3000, 5, 10, 1)],
+            ("BER", "2026-11"): [(2950, 5, 10, 1)],  # z dojazdem 3100 -> wygrywa WAW
+        }
+        cfg = make_cfg()
+        cfg.search.months_ahead = 5
+        for month, price in [("2026-12", 2500), ("2027-01", 3500), ("2027-02", 2800)]:
+            prices[("WAW", month)] = [(price, 5, 10, 1)]
+        self.run_scan(prices, cfg)
+        msg = format_report(cfg, State(self.state_path), [], datetime(2026, 10, 19, 9, 0))
+        lines = [l for l in msg.splitlines() if l[:2] in ("1.", "2.", "3.", "4.")]
+        self.assertEqual([l.split("</b>")[0].split("<b>")[1] for l in lines], ["gru 2026", "lut 2027", "lis 2026"])
+        self.assertIn("…i 2 droższe miesiące na stronie", msg)
+        with mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "HappyChocolat3/skaner-lot-w-"}):
+            msg = format_report(cfg, State(self.state_path), [], datetime(2026, 10, 19, 9, 0))
+        self.assertIn('<a href="https://happychocolat3.github.io/skaner-lot-w-/">na stronie</a>', msg)
 
     def test_report_slot(self):
         hours = [9, 12, 15, 18]

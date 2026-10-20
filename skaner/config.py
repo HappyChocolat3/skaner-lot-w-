@@ -28,6 +28,7 @@ class NotifyConfig:
     alert_below: float = 0
     report_hours: list[int] = field(default_factory=lambda: [9, 12, 15, 18])
     timezone: str = "Europe/Warsaw"
+    report_top: int = 3
 
 
 @dataclass
@@ -77,6 +78,7 @@ def load_config(path: str | Path, settings_path: str | Path | None = None) -> Co
         alert_below=float(n.get("alert_below", 0)),
         report_hours=sorted(int(h) for h in n.get("report_hours", [9, 12, 15, 18])),
         timezone=n.get("timezone", "Europe/Warsaw"),
+        report_top=int(n.get("report_top", 3)),
     )
 
     p = dict(raw.get("provider", {}))

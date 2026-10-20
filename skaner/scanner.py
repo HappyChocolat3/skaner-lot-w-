@@ -2,6 +2,7 @@
 
 import html
 import logging
+import os
 import time
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -145,22 +146,18 @@ def format_report(cfg: Config, state: State, alerts: list[Alert], now: datetime)
             f"✈️ <b>Raport lotów: {html.escape(describe(dest))}</b>",
             f"{now.strftime('%d.%m.%Y, %H:%M')} · {trip}",
         ]
-        if any(d == dest for d, _ in drops):
+        route = state.data["routes"].get(dest, {})
+        offers = [(m, route[m]) for m in months if route.get(m, {}).get("current")]
+        top = sorted(offers, key=lambda x: x[1]["current"]["effective_price"])[: cfg.notify.report_top]
+        if any((dest, m) in drops for m, _ in top):
             lines.append("🔥 = nowa najniższa cena")
         lines.append("")
-        empty = []
-        for month in months:
-            entry = state.data["routes"].get(dest, {}).get(month, {})
-            current = entry.get("current")
-            if not current:
-                empty.append(month)
-                continue
-            lines.append(_format_month(month, current, entry.get("best"), drops.get((dest, month))))
-        if len(empty) == len(months):
+        if not top:
             lines.append("Brak ofert na żaden miesiąc.")
-        elif empty:
-            lines.append("")
-            lines.append("Brak ofert: " + _month_ranges(empty, months))
+        for i, (month, entry) in enumerate(top, 1):
+            lines.append(f"{i}. " + _format_month(month, entry["current"], entry.get("best"), drops.get((dest, month))))
+        if len(offers) > len(top):
+            lines.append(f"…i {_more_months(len(offers) - len(top))} {_page_link('na stronie')}")
         sections.append("\n".join(lines))
     return "\n\n".join(sections)
 
@@ -188,25 +185,21 @@ def _format_month(month: str, o: dict, best: dict | None, alert: Alert | None) -
     return line
 
 
-def _month_ranges(selected: list[str], months: list[str]) -> str:
-    """['2027-01','2027-02','2027-03','2027-05'] -> 'sty–mar 2027, maj 2027'."""
-    runs, prev_idx = [], None
-    for m in selected:
-        idx = months.index(m)
-        if prev_idx is not None and idx == prev_idx + 1:
-            runs[-1][1] = m
-        else:
-            runs.append([m, m])
-        prev_idx = idx
-    parts = []
-    for start, end in runs:
-        if start == end:
-            parts.append(_short_month(start))
-        elif start[:4] == end[:4]:
-            parts.append(f"{_short_month(start).split()[0]}–{_short_month(end)}")
-        else:
-            parts.append(f"{_short_month(start)} – {_short_month(end)}")
-    return ", ".join(parts)
+def _more_months(n: int) -> str:
+    if n == 1:
+        return "1 droższy miesiąc"
+    if n % 10 in (2, 3, 4) and n % 100 not in (12, 13, 14):
+        return f"{n} droższe miesiące"
+    return f"{n} droższych miesięcy"
+
+
+def _page_link(text: str) -> str:
+    """Link do strony na GitHub Pages (w GitHub Actions znamy repozytorium z GITHUB_REPOSITORY)."""
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if "/" not in repo:
+        return text
+    owner, name = repo.split("/", 1)
+    return f'<a href="https://{owner.lower()}.github.io/{name}/">{text}</a>'
 
 
 def _short_month(month: str) -> str:
