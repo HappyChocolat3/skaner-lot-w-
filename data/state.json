@@ -1,9 +1,9 @@
 {
-  "last_report": "2026-10-19 18",
+  "last_report": "2026-10-20 12",
   "routes": {
     "LAS": {
       "2026-10": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2026-11": {
@@ -22,14 +22,14 @@
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2026-11-24",
           "destination": "LAS",
           "effective_price": 2992.0,
-          "found_at": "2026-10-19T20:42:26+00:00",
+          "found_at": "2026-10-20T11:33:15+00:00",
           "link": "https://www.aviasales.com/search/BER2411LAS01121?t=AA17955012001795549140001339BERLHRORDLAS17961415201796238000001068LASLAXLHRBER_5cc193114105fa3e89e86e061c5ab74f_61148&search_date=15102026&expected_price_uuid=01a14013-e284-8030-2783-b7550513cb96&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=efMhjXF8zFsWUARF1qvtfg&expected_price_source=share&expected_price_currency=pln&expected_price=2842",
           "origin": "BER",
           "price": 2842.0,
@@ -46,19 +46,33 @@
           "currency": "PLN",
           "departure_date": "2026-12-01",
           "destination": "LAS",
-          "effective_price": 2831.0,
-          "found_at": "2026-10-18T21:02:35+00:00",
-          "link": "https://www.aviasales.com/search/BER0112LAS10121?t=BA17961060001796151000001290BERLHRLAS17969361001797018900000840LASLHRBER_bc4cf9a3191bf603d1485d007728412d_57363&search_date=12102026&expected_price_uuid=01a12fd6-099e-8030-274c-7e3a1fc21043&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TqWpo_PFJPjK0MRy3qGLdA&expected_price_source=share&expected_price_currency=pln&expected_price=2681",
+          "effective_price": 2766.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0112LAS10121?t=BA17961060001796151000001290BERLHRLAS17969361001797025200000945LASLHRBER_ba31027f539a1a141ae1379a919ca58e_55746&search_date=20102026&expected_price_uuid=01a1590c-20f4-8030-28bb-1ab244f14f66&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NwwIV-TzOsoWB5HQKnSUfA&expected_price_source=share&expected_price_currency=pln&expected_price=2616",
           "origin": "BER",
-          "price": 2681.0,
+          "price": 2616.0,
           "return_date": "2026-12-10",
           "return_transfers": 1,
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-19T20:42:26+00:00",
-        "current": null,
-        "last_alert_price": 2831.0
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2026-12-01",
+          "destination": "LAS",
+          "effective_price": 2766.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0112LAS10121?t=BA17961060001796151000001290BERLHRLAS17969361001797025200000945LASLHRBER_ba31027f539a1a141ae1379a919ca58e_55746&search_date=20102026&expected_price_uuid=01a1590c-20f4-8030-28bb-1ab244f14f66&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NwwIV-TzOsoWB5HQKnSUfA&expected_price_source=share&expected_price_currency=pln&expected_price=2616",
+          "origin": "BER",
+          "price": 2616.0,
+          "return_date": "2026-12-10",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2766.0
       },
       "2027-01": {
         "best": {
@@ -76,17 +90,17 @@
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": {
           "airline": "LH",
           "currency": "PLN",
           "departure_date": "2027-01-02",
           "destination": "LAS",
-          "effective_price": 5699.0,
-          "found_at": "2026-10-19T20:42:26+00:00",
-          "link": "https://www.aviasales.com/search/WAW0201LAS13011?t=AC17988714001798930020001517WAWFRAYYZLAS17998428001799934900000995LASYYZFRAWAW_d711d37e0c8af2aa7a49a0229d0469ff_123256&search_date=19102026&expected_price_uuid=01a1528e-7024-8031-2371-e3d798842c38&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EYzeK3VOMcA54BSD1hNDbg&expected_price_source=share&expected_price_currency=pln&expected_price=5699",
+          "effective_price": 5705.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0201LAS13011?t=AC17988714001798930020001517WAWFRAYYZLAS17998428001799934900000995LASYYZFRAWAW_d711d37e0c8af2aa7a49a0229d0469ff_123256&search_date=19102026&expected_price_uuid=01a1528e-7024-8031-2371-e3d798842c38&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=EYzeK3VOMcA54BSD1hNDbg&expected_price_source=share&expected_price_currency=pln&expected_price=5705",
           "origin": "WAW",
-          "price": 5699.0,
+          "price": 5705.0,
           "return_date": "2027-01-13",
           "return_transfers": 2,
           "source": "travelpayouts",
@@ -95,11 +109,11 @@
         "last_alert_price": 5695.0
       },
       "2027-02": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-03": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-04": {
@@ -118,14 +132,14 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2027-04-01",
           "destination": "LAS",
           "effective_price": 3028.0,
-          "found_at": "2026-10-19T20:42:26+00:00",
+          "found_at": "2026-10-20T11:33:15+00:00",
           "link": "https://www.aviasales.com/search/BER0104LAS11041?t=BA18065829001806609600000985BERLHRLAS18074814001807568400000910LASLHRBER_8c38a7700f45f22f1418b55b3dec64fe_61944&search_date=14102026&expected_price_uuid=01a13839-c9cc-8030-2950-d710061dabff&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=tledY49vVA5IX5OzowVzuw&expected_price_source=share&expected_price_currency=pln&expected_price=2878",
           "origin": "BER",
           "price": 2878.0,
@@ -137,83 +151,933 @@
         "last_alert_price": 3028.0
       },
       "2027-05": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-06": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-08": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-10-19T20:42:26+00:00",
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      }
+    },
+    "LAX": {
+      "2026-10": {
+        "best": {
+          "airline": "AA",
+          "currency": "PLN",
+          "departure_date": "2026-10-29",
+          "destination": "LAX",
+          "effective_price": 2803.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER2910LAX07111?t=AA17932545001793290200001075BERLHRLAX17940515401794143700000996LAXORDLHRBER_861e9915e06f20dd5bf4cee6ebddd8de_57055&search_date=15102026&expected_price_uuid=01a13fd4-da14-8031-24b5-88d5ad6aca05&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dv7JFpPjFI7_UwlfcCoMJg&expected_price_source=share&expected_price_currency=pln&expected_price=2653",
+          "origin": "BER",
+          "price": 2653.0,
+          "return_date": "2026-11-07",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "AA",
+          "currency": "PLN",
+          "departure_date": "2026-10-29",
+          "destination": "LAX",
+          "effective_price": 2803.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER2910LAX07111?t=AA17932545001793290200001075BERLHRLAX17940515401794143700000996LAXORDLHRBER_861e9915e06f20dd5bf4cee6ebddd8de_57055&search_date=15102026&expected_price_uuid=01a13fd4-da14-8031-24b5-88d5ad6aca05&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dv7JFpPjFI7_UwlfcCoMJg&expected_price_source=share&expected_price_currency=pln&expected_price=2653",
+          "origin": "BER",
+          "price": 2653.0,
+          "return_date": "2026-11-07",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2803.0
+      },
+      "2026-11": {
+        "best": {
+          "airline": "W6",
+          "currency": "PLN",
+          "departure_date": "2026-11-19",
+          "destination": "LAX",
+          "effective_price": 3001.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1911LAX29111?t=AT17950665001795159200002085WAWFCOCMNLAX17959440001796072100001595LAXCMNFCOWAW_c14048596c4ad21511ef921c2440870c_64941&search_date=18102026&expected_price_uuid=01a14fe3-dce0-8030-e390-16de07c38982&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dT4ikuqKPD6QnnRJOFBIug&expected_price_source=share&expected_price_currency=pln&expected_price=3001",
+          "origin": "WAW",
+          "price": 3001.0,
+          "return_date": "2026-11-29",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "W6",
+          "currency": "PLN",
+          "departure_date": "2026-11-19",
+          "destination": "LAX",
+          "effective_price": 3001.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1911LAX29111?t=AT17950665001795159200002085WAWFCOCMNLAX17959440001796072100001595LAXCMNFCOWAW_c14048596c4ad21511ef921c2440870c_64941&search_date=18102026&expected_price_uuid=01a14fe3-dce0-8030-e390-16de07c38982&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=dT4ikuqKPD6QnnRJOFBIug&expected_price_source=share&expected_price_currency=pln&expected_price=3001",
+          "origin": "WAW",
+          "price": 3001.0,
+          "return_date": "2026-11-29",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "last_alert_price": 3001.0
+      },
+      "2026-12": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2026-12-29",
+          "destination": "LAX",
+          "effective_price": 2297.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/PRG2912LAX09011?t=AA17985261001798592160001641PRGLHRJFKLAX17994911401799586600001051LAXORDLHRPRG_a28f0ee50427192c252961b736152c0a_46462&search_date=18102026&expected_price_uuid=01a14ef5-037e-8030-e591-4214c8fa7ade&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=AEukZQ4q3GKjuLAf_XnyEg&expected_price_source=share&expected_price_currency=pln&expected_price=2147",
+          "origin": "PRG",
+          "price": 2147.0,
+          "return_date": "2027-01-09",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2026-12-29",
+          "destination": "LAX",
+          "effective_price": 2297.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/PRG2912LAX09011?t=AA17985261001798592160001641PRGLHRJFKLAX17994911401799586600001051LAXORDLHRPRG_a28f0ee50427192c252961b736152c0a_46462&search_date=18102026&expected_price_uuid=01a14ef5-037e-8030-e591-4214c8fa7ade&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=AEukZQ4q3GKjuLAf_XnyEg&expected_price_source=share&expected_price_currency=pln&expected_price=2147",
+          "origin": "PRG",
+          "price": 2147.0,
+          "return_date": "2027-01-09",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "last_alert_price": 2297.0
+      },
+      "2027-01": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-01-11",
+          "destination": "SNA",
+          "effective_price": 2453.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER1101LAX20011?t=AA17996769001799768700002070BERLHRDFWSNA18004641601800559500001049SNAPHXLHRBER_8e322f919d6be84f5da6f2351ba87fd3_49399&search_date=14102026&expected_price_uuid=01a13add-5d68-8030-a17a-997676b00cc8&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7mdolPk8lqRXxU1KQHICFw&expected_price_source=share&expected_price_currency=pln&expected_price=2303",
+          "origin": "BER",
+          "price": 2303.0,
+          "return_date": "2027-01-20",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-01-11",
+          "destination": "SNA",
+          "effective_price": 2453.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER1101LAX20011?t=AA17996769001799768700002070BERLHRDFWSNA18004641601800559500001049SNAPHXLHRBER_8e322f919d6be84f5da6f2351ba87fd3_49399&search_date=14102026&expected_price_uuid=01a13add-5d68-8030-a17a-997676b00cc8&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7mdolPk8lqRXxU1KQHICFw&expected_price_source=share&expected_price_currency=pln&expected_price=2303",
+          "origin": "BER",
+          "price": 2303.0,
+          "return_date": "2027-01-20",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "last_alert_price": 2453.0
+      },
+      "2027-02": {
+        "best": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-02-03",
+          "destination": "LAX",
+          "effective_price": 3348.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0302LAX17021?t=SK18016497001801674000000945WAWCPHLAX18028926001803029700001745LAXCPHWAW_5855fc5d372c55097bb07e63e1c666db_71453&search_date=14102026&expected_price_uuid=01a13b5b-b066-8031-6584-6840deaea0a7&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=2OTK-slzFz6pK_NM9jechA&expected_price_source=share&expected_price_currency=pln&expected_price=3348",
+          "origin": "WAW",
+          "price": 3348.0,
+          "return_date": "2027-02-17",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-02-03",
+          "destination": "LAX",
+          "effective_price": 3348.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0302LAX17021?t=SK18016497001801674000000945WAWCPHLAX18028926001803029700001745LAXCPHWAW_5855fc5d372c55097bb07e63e1c666db_71453&search_date=14102026&expected_price_uuid=01a13b5b-b066-8031-6584-6840deaea0a7&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=2OTK-slzFz6pK_NM9jechA&expected_price_source=share&expected_price_currency=pln&expected_price=3348",
+          "origin": "WAW",
+          "price": 3348.0,
+          "return_date": "2027-02-17",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 3348.0
+      },
+      "2027-03": {
+        "best": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-03-01",
+          "destination": "LAX",
+          "effective_price": 2501.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0103LAX08031?t=SK18039345001804006800001745BERCPHLAX18045342001804623000000940LAXCPHBER_fd53b43e35d0939220a641c44a1a9d58_49938&search_date=20102026&expected_price_uuid=01a1578a-bf8d-8030-6039-e31d3af28716&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Lw_GW_kO1uhwDoQwVkPF_g&expected_price_source=share&expected_price_currency=pln&expected_price=2351",
+          "origin": "BER",
+          "price": 2351.0,
+          "return_date": "2027-03-08",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-03-01",
+          "destination": "LAX",
+          "effective_price": 2501.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0103LAX08031?t=SK18039345001804006800001745BERCPHLAX18045342001804623000000940LAXCPHBER_fd53b43e35d0939220a641c44a1a9d58_49938&search_date=20102026&expected_price_uuid=01a1578a-bf8d-8030-6039-e31d3af28716&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Lw_GW_kO1uhwDoQwVkPF_g&expected_price_source=share&expected_price_currency=pln&expected_price=2351",
+          "origin": "BER",
+          "price": 2351.0,
+          "return_date": "2027-03-08",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2501.0
+      },
+      "2027-04": {
+        "best": {
+          "airline": "W4",
+          "currency": "PLN",
+          "departure_date": "2027-04-01",
+          "destination": "LAX",
+          "effective_price": 2619.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0104LAX11041?t=AA18065727001806627300001450WAWMXPMIALAX18074727001807607400001705LAXLHRLINMXPWAW_53850e6ef5ddf480b432eb5066317d70_55593&search_date=19102026&expected_price_uuid=01a1541d-5905-8031-2702-8676b9cb691a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Kj_gy1on_q-oUBnW7Qfoqw&expected_price_source=share&expected_price_currency=pln&expected_price=2619",
+          "origin": "WAW",
+          "price": 2619.0,
+          "return_date": "2027-04-11",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "W4",
+          "currency": "PLN",
+          "departure_date": "2027-04-01",
+          "destination": "LAX",
+          "effective_price": 2619.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0104LAX11041?t=AA18065727001806627300001450WAWMXPMIALAX18074727001807607400001705LAXLHRLINMXPWAW_53850e6ef5ddf480b432eb5066317d70_55593&search_date=19102026&expected_price_uuid=01a1541d-5905-8031-2702-8676b9cb691a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Kj_gy1on_q-oUBnW7Qfoqw&expected_price_source=share&expected_price_currency=pln&expected_price=2619",
+          "origin": "WAW",
+          "price": 2619.0,
+          "return_date": "2027-04-11",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "last_alert_price": 2619.0
+      },
+      "2027-05": {
+        "best": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-05-31",
+          "destination": "LAX",
+          "effective_price": 3183.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW3105LAX13061?t=SK18117585001811782200000935WAWCPHLAX18129138001812999900000895LAXCPHWAW_f0cc4337816b9d4f85cea5ffee9968c5_68350&search_date=13102026&expected_price_uuid=01a13612-9e6e-8030-a828-1e60ec5d1557&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3wzav8IbhPIYGqAR37dIWA&expected_price_source=share&expected_price_currency=pln&expected_price=3183",
+          "origin": "WAW",
+          "price": 3183.0,
+          "return_date": "2027-06-13",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-05-31",
+          "destination": "LAX",
+          "effective_price": 3183.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW3105LAX13061?t=SK18117585001811782200000935WAWCPHLAX18129138001812999900000895LAXCPHWAW_f0cc4337816b9d4f85cea5ffee9968c5_68350&search_date=13102026&expected_price_uuid=01a13612-9e6e-8030-a828-1e60ec5d1557&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3wzav8IbhPIYGqAR37dIWA&expected_price_source=share&expected_price_currency=pln&expected_price=3183",
+          "origin": "WAW",
+          "price": 3183.0,
+          "return_date": "2027-06-13",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 3183.0
+      },
+      "2027-06": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-06-06",
+          "destination": "LAX",
+          "effective_price": 2902.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0606LAX16061?t=BA18122640001812289500000965BERLHRLAX18131793001813263600000865LAXLHRBER_8a810177ce62af50e1dadc8cb47170af_59247&search_date=16102026&expected_price_uuid=01a1444f-0efd-8030-ef53-936b2d8609d1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=slubgS6j9T4PhsjNIuNM9w&expected_price_source=share&expected_price_currency=pln&expected_price=2752",
+          "origin": "BER",
+          "price": 2752.0,
+          "return_date": "2027-06-16",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-06-06",
+          "destination": "LAX",
+          "effective_price": 2902.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0606LAX16061?t=BA18122640001812289500000965BERLHRLAX18131793001813263600000865LAXLHRBER_8a810177ce62af50e1dadc8cb47170af_59247&search_date=16102026&expected_price_uuid=01a1444f-0efd-8030-ef53-936b2d8609d1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=slubgS6j9T4PhsjNIuNM9w&expected_price_source=share&expected_price_currency=pln&expected_price=2752",
+          "origin": "BER",
+          "price": 2752.0,
+          "return_date": "2027-06-16",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2902.0
+      },
+      "2027-07": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-08": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-09": {
+        "best": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-09-21",
+          "destination": "LAX",
+          "effective_price": 3040.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2109LAX05101?t=SK18215217001821545400000935WAWCPHLAX18227634001822901700001765LAXCPHWAW_7953ae1d271884880e50fcf2f944a973_64669&search_date=17102026&expected_price_uuid=01a14b3d-36ba-8031-65f3-2c002c6c2b3f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4JrBfC4ZE-jVYiDRxFr5oQ&expected_price_source=share&expected_price_currency=pln&expected_price=3040",
+          "origin": "WAW",
+          "price": 3040.0,
+          "return_date": "2027-10-05",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "SK",
+          "currency": "PLN",
+          "departure_date": "2027-09-21",
+          "destination": "LAX",
+          "effective_price": 3040.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2109LAX05101?t=SK18215217001821545400000935WAWCPHLAX18227634001822901700001765LAXCPHWAW_7953ae1d271884880e50fcf2f944a973_64669&search_date=17102026&expected_price_uuid=01a14b3d-36ba-8031-65f3-2c002c6c2b3f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4JrBfC4ZE-jVYiDRxFr5oQ&expected_price_source=share&expected_price_currency=pln&expected_price=3040",
+          "origin": "WAW",
+          "price": 3040.0,
+          "return_date": "2027-10-05",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 3040.0
+      },
+      "2027-10": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-11": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-12": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-01": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-02": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-03": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-04": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-05": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-06": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-07": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-08": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-09": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-10": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-11": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-12": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      }
+    },
+    "MIA": {
+      "2026-10": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-10-28",
+          "destination": "MIA",
+          "effective_price": 2235.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2810MIA04111?t=TP17932101001793288700001610WAWLISMIA17938107001793880600000805MIALISWAW_bab7395676dc0856c5683e2d811d8997_47848&search_date=14102026&expected_price_uuid=01a13b30-18bd-8030-6a16-14246703bde8&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ubdGtmJM5DaoIT3EEOrSbw&expected_price_source=share&expected_price_currency=pln&expected_price=2235",
+          "origin": "WAW",
+          "price": 2235.0,
+          "return_date": "2026-11-04",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-10-28",
+          "destination": "MIA",
+          "effective_price": 2235.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2810MIA04111?t=TP17932101001793288700001610WAWLISMIA17938107001793880600000805MIALISWAW_bab7395676dc0856c5683e2d811d8997_47848&search_date=14102026&expected_price_uuid=01a13b30-18bd-8030-6a16-14246703bde8&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ubdGtmJM5DaoIT3EEOrSbw&expected_price_source=share&expected_price_currency=pln&expected_price=2235",
+          "origin": "WAW",
+          "price": 2235.0,
+          "return_date": "2026-11-04",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2235.0
+      },
+      "2026-11": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-11-20",
+          "destination": "MIA",
+          "effective_price": 2204.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2011MIA27111?t=TP17951973001795272600001615WAWLISMIA17957979001795867800000805MIALISWAW_8b7d17f59bd0eeb21c011210cd9c1e39_47618&search_date=13102026&expected_price_uuid=01a1377f-aa9e-8030-e917-49cb7a3c831d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=hKZr5wbkCTm53pXBrxSEow&expected_price_source=share&expected_price_currency=pln&expected_price=2204",
+          "origin": "WAW",
+          "price": 2204.0,
+          "return_date": "2026-11-27",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-11-20",
+          "destination": "MIA",
+          "effective_price": 2204.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2011MIA27111?t=TP17951973001795272600001615WAWLISMIA17957979001795867800000805MIALISWAW_8b7d17f59bd0eeb21c011210cd9c1e39_47618&search_date=13102026&expected_price_uuid=01a1377f-aa9e-8030-e917-49cb7a3c831d&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=hKZr5wbkCTm53pXBrxSEow&expected_price_source=share&expected_price_currency=pln&expected_price=2204",
+          "origin": "WAW",
+          "price": 2204.0,
+          "return_date": "2026-11-27",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2204.0
+      },
+      "2026-12": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-12-14",
+          "destination": "MIA",
+          "effective_price": 2606.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1412MIA28121?t=TP17972532001797346200001910WAWLISMIA17984766001798546200000800MIALISWAW_66a28a3ee010ffcb3265c671d2c27d14_56160&search_date=15102026&expected_price_uuid=01a14179-a743-8031-66b3-6385854aec04&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TpAw9r4x4MAEZRBipxfUoA&expected_price_source=share&expected_price_currency=pln&expected_price=2606",
+          "origin": "WAW",
+          "price": 2606.0,
+          "return_date": "2026-12-28",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2026-12-14",
+          "destination": "MIA",
+          "effective_price": 2606.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1412MIA28121?t=TP17972532001797346200001910WAWLISMIA17984766001798546200000800MIALISWAW_66a28a3ee010ffcb3265c671d2c27d14_56160&search_date=15102026&expected_price_uuid=01a14179-a743-8031-66b3-6385854aec04&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=TpAw9r4x4MAEZRBipxfUoA&expected_price_source=share&expected_price_currency=pln&expected_price=2606",
+          "origin": "WAW",
+          "price": 2606.0,
+          "return_date": "2026-12-28",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2606.0
+      },
+      "2027-01": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-01-13",
+          "destination": "MIA",
+          "effective_price": 2232.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1301MIA29011?t=TP17998629001799937900001610WAWLISMIA18012411001801311000000805MIALISWAW_4a233d8b4082f1148e1efbe417ae50b2_48171&search_date=16102026&expected_price_uuid=01a142bf-f2cd-8030-6a67-ef82e6cd2fee&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v2E0lGJc2oWTAhROjTtREQ&expected_price_source=share&expected_price_currency=pln&expected_price=2232",
+          "origin": "WAW",
+          "price": 2232.0,
+          "return_date": "2027-01-29",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-01-13",
+          "destination": "MIA",
+          "effective_price": 2232.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1301MIA29011?t=TP17998629001799937900001610WAWLISMIA18012411001801311000000805MIALISWAW_4a233d8b4082f1148e1efbe417ae50b2_48171&search_date=16102026&expected_price_uuid=01a142bf-f2cd-8030-6a67-ef82e6cd2fee&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=v2E0lGJc2oWTAhROjTtREQ&expected_price_source=share&expected_price_currency=pln&expected_price=2232",
+          "origin": "WAW",
+          "price": 2232.0,
+          "return_date": "2027-01-29",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2232.0
+      },
+      "2027-02": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-02-20",
+          "destination": "MIA",
+          "effective_price": 2383.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2002MIA07031?t=TP18031284001803221400001910WAWLISMIA18044376001804507500000805MIALISWAW_6922f796bf110290b4f60413e5c06a2a_51564&search_date=18102026&expected_price_uuid=01a14faf-840f-8030-6fc4-bfdec908c847&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_qQYst7UeXBooBetapdv_A&expected_price_source=share&expected_price_currency=pln&expected_price=2383",
+          "origin": "WAW",
+          "price": 2383.0,
+          "return_date": "2027-03-07",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-02-20",
+          "destination": "MIA",
+          "effective_price": 2383.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW2002MIA07031?t=TP18031284001803221400001910WAWLISMIA18044376001804507500000805MIALISWAW_6922f796bf110290b4f60413e5c06a2a_51564&search_date=18102026&expected_price_uuid=01a14faf-840f-8030-6fc4-bfdec908c847&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=_qQYst7UeXBooBetapdv_A&expected_price_source=share&expected_price_currency=pln&expected_price=2383",
+          "origin": "WAW",
+          "price": 2383.0,
+          "return_date": "2027-03-07",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2383.0
+      },
+      "2027-03": {
+        "best": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-03-01",
+          "destination": "MIA",
+          "effective_price": 2423.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0103MIA15031?t=TP18039060001803999000001910WAWLISMIA18051330001805199000000800MIALISWAW_c544a856784addf65f5cea8533ac1fbd_52052&search_date=15102026&expected_price_uuid=01a13e35-96db-8030-e0fa-a558869edc70&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=wB2FwX0ep28ZWInq7waO_Q&expected_price_source=share&expected_price_currency=pln&expected_price=2423",
+          "origin": "WAW",
+          "price": 2423.0,
+          "return_date": "2027-03-15",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "TP",
+          "currency": "PLN",
+          "departure_date": "2027-03-01",
+          "destination": "MIA",
+          "effective_price": 2423.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW0103MIA15031?t=TP18039060001803999000001910WAWLISMIA18051330001805199000000800MIALISWAW_c544a856784addf65f5cea8533ac1fbd_52052&search_date=15102026&expected_price_uuid=01a13e35-96db-8030-e0fa-a558869edc70&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=wB2FwX0ep28ZWInq7waO_Q&expected_price_source=share&expected_price_currency=pln&expected_price=2423",
+          "origin": "WAW",
+          "price": 2423.0,
+          "return_date": "2027-03-15",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2423.0
+      },
+      "2027-04": {
+        "best": {
+          "airline": "AY",
+          "currency": "PLN",
+          "departure_date": "2027-04-29",
+          "destination": "MIA",
+          "effective_price": 2978.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/GDN2904MIA08051?t=AY18089883001809030660001066GDNHELJFKMIA18097965001809893700001260MIAORDHELGDN_17fc6829326d882f03e6ebae9c959634_64267&search_date=16102026&expected_price_uuid=01a1434e-072d-8030-67d2-008fb6de99e3&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0XQ4ppKxVsGs4CbniwxwPg&expected_price_source=share&expected_price_currency=pln&expected_price=2978",
+          "origin": "GDN",
+          "price": 2978.0,
+          "return_date": "2027-05-08",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "AY",
+          "currency": "PLN",
+          "departure_date": "2027-04-29",
+          "destination": "MIA",
+          "effective_price": 2978.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/GDN2904MIA08051?t=AY18089883001809030660001066GDNHELJFKMIA18097965001809893700001260MIAORDHELGDN_17fc6829326d882f03e6ebae9c959634_64267&search_date=16102026&expected_price_uuid=01a1434e-072d-8030-67d2-008fb6de99e3&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=0XQ4ppKxVsGs4CbniwxwPg&expected_price_source=share&expected_price_currency=pln&expected_price=2978",
+          "origin": "GDN",
+          "price": 2978.0,
+          "return_date": "2027-05-08",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 2
+        },
+        "last_alert_price": 2978.0
+      },
+      "2027-05": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-05-12",
+          "destination": "MIA",
+          "effective_price": 2927.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1205MIA26051?t=AA18101226001810152600000860WAWLHRMIA18113712001811502000001820MIALHRWAW_45d1393fb96723c95c9d18a0d30138be_62883&search_date=15102026&expected_price_uuid=01a13e35-bcc3-8031-62c7-9378eb062f82&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=bMByaIgnkCVZQ4cEZ7mxjg&expected_price_source=share&expected_price_currency=pln&expected_price=2927",
+          "origin": "WAW",
+          "price": 2927.0,
+          "return_date": "2027-05-26",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-05-12",
+          "destination": "MIA",
+          "effective_price": 2927.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1205MIA26051?t=AA18101226001810152600000860WAWLHRMIA18113712001811502000001820MIALHRWAW_45d1393fb96723c95c9d18a0d30138be_62883&search_date=15102026&expected_price_uuid=01a13e35-bcc3-8031-62c7-9378eb062f82&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=bMByaIgnkCVZQ4cEZ7mxjg&expected_price_source=share&expected_price_currency=pln&expected_price=2927",
+          "origin": "WAW",
+          "price": 2927.0,
+          "return_date": "2027-05-26",
+          "return_transfers": 1,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2927.0
+      },
+      "2027-06": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-06-18",
+          "destination": "MIA",
+          "effective_price": 2833.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1806MIA26061?t=AA18133194001813349700000865WAWLHRMIA18139902601814093100001354MIAJFKLHRWAW_b6bd2bdb2c8aac3519949dfe76f43394_61301&search_date=18102026&expected_price_uuid=01a14f05-443f-8030-e786-33565f67ccf2&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=2X-jWFpEzZX3kdEJClWz8w&expected_price_source=share&expected_price_currency=pln&expected_price=2833",
+          "origin": "WAW",
+          "price": 2833.0,
+          "return_date": "2027-06-26",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-06-18",
+          "destination": "MIA",
+          "effective_price": 2833.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/WAW1806MIA26061?t=AA18133194001813349700000865WAWLHRMIA18139902601814093100001354MIAJFKLHRWAW_b6bd2bdb2c8aac3519949dfe76f43394_61301&search_date=18102026&expected_price_uuid=01a14f05-443f-8030-e786-33565f67ccf2&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=2X-jWFpEzZX3kdEJClWz8w&expected_price_source=share&expected_price_currency=pln&expected_price=2833",
+          "origin": "WAW",
+          "price": 2833.0,
+          "return_date": "2027-06-26",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2833.0
+      },
+      "2027-07": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-07-24",
+          "destination": "MIA",
+          "effective_price": 2812.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER2407MIA06081?t=AA18164340001816525200001880BERLHRMIA18175428001817638200001230MIAPHLLHRBER_4c25c59995229dc52181b93f046aaed6_57596&search_date=18102026&expected_price_uuid=01a15066-2b70-8030-2cff-05ee7521d3f8&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=Muv75st79G2K7ZF9ZM_Ymw&expected_price_source=share&expected_price_currency=pln&expected_price=2662",
+          "origin": "BER",
+          "price": 2662.0,
+          "return_date": "2027-08-06",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-07-24",
+          "destination": "MIA",
+          "effective_price": 2812.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER2407MIA06081?t=AA18164340001816525200001880BERLHRMIA18175428001817638200001230MIAPHLLHRBER_4c25c59995229dc52181b93f046aaed6_57596&search_date=18102026&expected_price_uuid=01a15066-2b70-8030-2cff-05ee7521d3f8&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=Muv75st79G2K7ZF9ZM_Ymw&expected_price_source=share&expected_price_currency=pln&expected_price=2662",
+          "origin": "BER",
+          "price": 2662.0,
+          "return_date": "2027-08-06",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 2812.0
+      },
+      "2027-08": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-09": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-10": {
+        "best": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-10-09",
+          "destination": "MIA",
+          "effective_price": 4820.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0910MIA16101?t=BA18230640001823091600000820BERLHRMIA18237225001823948700003410MIAORYSAWBER_32fdac85838cb4e7ff049c168eab034a_99493&search_date=20102026&expected_price_uuid=01a158f4-8d1f-8030-e744-e3e21d37d11b&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=WFAx3BGb1c-8qPqvQVKo9w&expected_price_source=share&expected_price_currency=pln&expected_price=4670",
+          "origin": "BER",
+          "price": 4670.0,
+          "return_date": "2027-10-16",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": {
+          "airline": "BA",
+          "currency": "PLN",
+          "departure_date": "2027-10-09",
+          "destination": "MIA",
+          "effective_price": 4820.0,
+          "found_at": "2026-10-20T11:33:15+00:00",
+          "link": "https://www.aviasales.com/search/BER0910MIA16101?t=BA18230640001823091600000820BERLHRMIA18237225001823948700003410MIAORYSAWBER_32fdac85838cb4e7ff049c168eab034a_99493&search_date=20102026&expected_price_uuid=01a158f4-8d1f-8030-e744-e3e21d37d11b&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=WFAx3BGb1c-8qPqvQVKo9w&expected_price_source=share&expected_price_currency=pln&expected_price=4670",
+          "origin": "BER",
+          "price": 4670.0,
+          "return_date": "2027-10-16",
+          "return_transfers": 2,
+          "source": "travelpayouts",
+          "transfers": 1
+        },
+        "last_alert_price": 4820.0
+      },
+      "2027-11": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2027-12": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-01": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-02": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-03": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-04": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-05": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-06": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-07": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-08": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-09": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-10": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-11": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
+        "current": null
+      },
+      "2028-12": {
+        "checked_at": "2026-10-20T11:33:15+00:00",
         "current": null
       }
     }
