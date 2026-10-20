@@ -117,16 +117,18 @@ def _decide(cfg: Config, entry: dict, record: dict, dest: str, month: str) -> Al
     return None
 
 
-def report_slot(now: datetime, hours: list[int]) -> str | None:
-    """Ostatnia godzina raportu, która już nadeszła dziś, np. '2026-10-19 12'.
+def report_slot(now: datetime, hours: list[int], early_minutes: int = 5, max_late_minutes: int = 120) -> str | None:
+    """Godzina raportu, w której okno właśnie trwa, np. '2026-10-19 12'.
 
-    Do `now` dodajemy kilka minut zapasu, bo GitHub Actions uruchamia się chwilę przed pełną godziną.
+    Okno zaczyna się chwilę przed pełną godziną (skan trwa kilka minut), a kończy po
+    `max_late_minutes` – GitHub potrafi mocno opóźniać zaplanowane zadania, a raport
+    „z 18:00” wysłany o 23 nie ma sensu.
     """
-    shifted = now + timedelta(minutes=20)
-    if shifted.date() != now.date():
-        shifted = now
-    passed = [h for h in hours if h <= shifted.hour]
-    return f"{now.date().isoformat()} {max(passed):02d}" if passed else None
+    for h in sorted(hours, reverse=True):
+        at = now.replace(hour=h, minute=0, second=0, microsecond=0)
+        if at - timedelta(minutes=early_minutes) <= now <= at + timedelta(minutes=max_late_minutes):
+            return f"{now.date().isoformat()} {h:02d}"
+    return None
 
 
 def format_report(cfg: Config, state: State, alerts: list[Alert], now: datetime) -> str:

@@ -2,9 +2,10 @@ name: Skan lotów
 
 on:
   schedule:
-    # Raporty o 9, 12, 15 i 18 czasu polskiego. Cron działa w UTC, więc uruchamiamy
-    # o :45 w obu wariantach (czas letni i zimowy), a skrypt sam sprawdza, czy to pora raportu.
-    - cron: "45 6,7,9,10,12,13,15,16 * * *"
+    # Raporty o 9, 12, 15 i 18 czasu polskiego. GitHub często opóźnia albo pomija zaplanowane
+    # uruchomienia, więc startujemy co 10 minut w ciągu dnia (cron jest w UTC). Skrypt sam
+    # sprawdza, czy to pora raportu – jeśli nie, kończy się po kilku sekundach.
+    - cron: "*/10 6-17 * * *"
   workflow_dispatch:          # ręczne uruchomienie z zakładki Actions = raport od razu
 
 permissions:
