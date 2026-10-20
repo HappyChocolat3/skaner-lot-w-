@@ -13,6 +13,7 @@ class SearchConfig:
     origins: list[str]
     months_ahead: int = 12
     until: str | None = None
+    since: str | None = None
     one_way: bool = False
     currency: str = "PLN"
     max_transfers: int | None = None
@@ -61,6 +62,7 @@ def load_config(path: str | Path, settings_path: str | Path | None = None) -> Co
         origins=origins,
         months_ahead=int(s.get("months_ahead", 12)),
         until=s.get("until"),
+        since=s.get("since"),
         one_way=bool(s.get("one_way", False)),
         currency=s.get("currency", "PLN").upper(),
         max_transfers=s.get("max_transfers"),
