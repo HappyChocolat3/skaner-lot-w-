@@ -1,9 +1,10 @@
 # Konfiguracja skanera lotów.
-# Sekrety (tokeny, numer telefonu) NIE trafiają tutaj – podaj je w zmiennych środowiskowych
+# Sekrety (tokeny) NIE trafiają tutaj – podaj je w zmiennych środowiskowych
 # albo w GitHub Secrets (patrz README).
 
 [search]
-# Kody IATA celów. W przyszłości wystarczy dopisać kolejne, np. ["LAS", "JFK", "BKK"].
+# Kody IATA celów. Zwykle wybierasz je na stronie (GitHub Pages) – wtedy zapisują się
+# w data/settings.json i mają pierwszeństwo przed tą listą.
 destinations = ["LAS"]
 
 # Lotniska wylotowe. Pełna lista znanych lotnisk: python -m skaner airports

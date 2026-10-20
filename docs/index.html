@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skaner lotów</title>
+<meta name="description" content="Najtańsze loty z Polski i okolic – wybór kierunków i ceny na każdy miesiąc.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f4f3ef;
+  --surface: #fcfcfb;
+  --surface-2: #efeee9;
+  --border: #e2e0d8;
+  --text: #0b0b0b;
+  --text-2: #52514e;
+  --muted: #8a8880;
+  --accent: #2a78d6;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3eefb;
+  --bar: #2a78d6;
+  --bar-best: #1b5fae;
+  --grid: #e7e5de;
+  --good: #0f7a3d;
+  --good-soft: #e2f3e8;
+  --warn: #9a5b00;
+  --danger: #b42318;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #121211;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --border: #2e2e2b;
+    --text: #f0efec;
+    --text-2: #c3c2b7;
+    --muted: #8d8c84;
+    --accent: #3987e5;
+    --accent-ink: #ffffff;
+    --accent-soft: #1d2b3d;
+    --bar: #3987e5;
+    --bar-best: #7fb2f0;
+    --grid: #2a2a27;
+    --good: #5cc98a;
+    --good-soft: #17301f;
+    --warn: #e0a54a;
+    --danger: #f07a6e;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+header h1 { margin: 0; font-size: 1.6rem; letter-spacing: -.01em; }
+header p { margin: 4px 0 0; color: var(--text-2); }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: var(--shadow);
+}
+.card h2 { margin: 0 0 4px; font-size: 1.15rem; }
+.sub { color: var(--text-2); font-size: .9rem; margin: 0; }
+.muted { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 6px 6px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-weight: 500;
+}
+.chip.new { outline: 2px dashed var(--accent); outline-offset: -2px; }
+.chip button {
+  border: 0; background: transparent; color: var(--text-2);
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1;
+}
+.chip button:hover { background: var(--surface-2); color: var(--text); }
+.search { position: relative; }
+.search input, .token input {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.search input:focus, .token input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.suggest {
+  position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 5;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  max-height: 300px; overflow-y: auto;
+  padding: 4px;
+}
+.suggest button {
+  display: flex; width: 100%; justify-content: space-between; gap: 12px;
+  padding: 10px 12px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.suggest button:hover, .suggest button.active { background: var(--surface-2); }
+.suggest .code { color: var(--muted); font-variant-numeric: tabular-nums; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+.btn {
+  padding: 11px 18px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.status { font-size: .9rem; color: var(--text-2); }
+.status.ok { color: var(--good); }
+.status.err { color: var(--danger); }
+.dest-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.hero { text-align: right; }
+.hero .label { font-size: .8rem; color: var(--text-2); }
+.hero .value { font-size: 1.8rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.hero .when { font-size: .85rem; color: var(--text-2); }
+.chart { margin-top: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.chart svg { display: block; }
+.chart text { fill: var(--text-2); font-size: 11px; font-family: inherit; }
+.chart .grid { stroke: var(--grid); stroke-width: 1; }
+.chart .bar { fill: var(--bar); }
+.chart .bar.best { fill: var(--bar-best); }
+.chart .empty { fill: var(--grid); }
+.chart text, .chart .bar, .chart .empty { pointer-events: none; }
+.chart .hit { fill: transparent; cursor: pointer; }
+.chart .hit:hover { fill: var(--grid); fill-opacity: .5; }
+.tip {
+  position: fixed; z-index: 10; pointer-events: none;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 10px; font-size: .85rem; box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  max-width: 240px; display: none;
+}
+.tip b { font-variant-numeric: tabular-nums; }
+.offers { list-style: none; margin: 16px 0 0; padding: 0; }
+.offer {
+  display: grid; grid-template-columns: max-content 1fr auto; gap: 4px 12px; align-items: center;
+  padding: 12px 0; border-top: 1px solid var(--border);
+}
+.offer .m { font-weight: 600; white-space: nowrap; min-width: 64px; }
+.offer .p { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.offer .d { color: var(--text-2); font-size: .88rem; grid-column: 2 / 3; }
+.offer .tags { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .75rem; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); }
+.offer a.buy {
+  grid-column: 3; grid-row: 1 / span 2; justify-self: end;
+  padding: 8px 12px; border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+  font-weight: 600; text-decoration: none; font-size: .9rem; white-space: nowrap;
+}
+.empty-note { color: var(--text-2); font-size: .9rem; margin: 12px 0 0; }
+details.token summary { cursor: pointer; font-weight: 600; }
+details.token ol { color: var(--text-2); padding-left: 20px; font-size: .92rem; }
+details.token code { background: var(--surface-2); padding: 1px 5px; border-radius: 6px; }
+a { color: var(--accent); }
+footer { margin-top: 24px; color: var(--muted); font-size: .85rem; text-align: center; }
+.skeleton { color: var(--muted); padding: 24px 0; text-align: center; }
+@media (max-width: 520px) {
+  .hero { text-align: left; }
+  .card { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>✈️ Skaner lotów</h1>
+    <p>Najtańsze loty z Polski i lotnisk przy granicy. Raporty na Telegram o <span id="hours">9, 12, 15 i 18</span>.</p>
+  </header>
+
+  <section class="card" id="picker">
+    <h2>Kierunki</h2>
+    <p class="sub">Wybierz, dokąd bot ma szukać lotów (maks. <span id="maxDest"></span>). Możesz wpisać miasto albo dowolny kod lotniska IATA.</p>
+    <div class="chips" id="chips"></div>
+    <div class="search">
+      <input id="q" type="search" placeholder="Dodaj kierunek, np. Bangkok, Tokio, JFK…" autocomplete="off" aria-label="Dodaj kierunek">
+      <div class="suggest" id="suggest" hidden></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="save" disabled>Zapisz i skanuj</button>
+      <button class="btn" id="reset" hidden>Cofnij zmiany</button>
+      <span class="status" id="status"></span>
+    </div>
+  </section>
+
+  <div id="results"><p class="skeleton">Wczytywanie cen…</p></div>
+
+  <section class="card">
+    <details class="token" id="tokenBox">
+      <summary>Połączenie z GitHubem</summary>
+      <p class="sub" style="margin-top:10px">Żeby zapisać kierunki, strona potrzebuje tokenu GitHuba. Token zostaje tylko w tej przeglądarce.</p>
+      <ol>
+        <li>Otwórz <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.</li>
+        <li>Nazwa: dowolna, np. <code>skaner-lotow</code>. Wygaśnięcie: np. 1 rok.</li>
+        <li><b>Repository access</b> → <i>Only select repositories</i> → wybierz <code id="repoName"></code>.</li>
+        <li><b>Permissions</b> → <b>Contents</b>: <i>Read and write</i> oraz <b>Actions</b>: <i>Read and write</i>.</li>
+        <li><b>Generate token</b>, skopiuj i wklej poniżej.</li>
+      </ol>
+      <div class="token">
+        <input id="token" type="password" placeholder="github_pat_…" autocomplete="off" aria-label="Token GitHuba">
+      </div>
+      <div class="row">
+        <button class="btn primary" id="tokenSave">Zapisz token</button>
+        <button class="btn" id="tokenClear">Usuń token</button>
+        <span class="status" id="tokenStatus"></span>
+      </div>
+    </details>
+  </section>
+
+  <footer id="footer"></footer>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const MAX_DEST = 5;
+const MONTHS = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
+const MONTHS_FULL = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
+const ORIGINS = {
+  WAW: "Warszawa Chopin", WMI: "Warszawa Modlin", KRK: "Kraków", KTW: "Katowice", GDN: "Gdańsk",
+  WRO: "Wrocław", POZ: "Poznań", RZE: "Rzeszów", LUZ: "Lublin", BZG: "Bydgoszcz", SZZ: "Szczecin",
+  LCJ: "Łódź", SZY: "Olsztyn-Mazury", IEG: "Zielona Góra", RDO: "Radom", PRG: "Praga", OSR: "Ostrawa",
+  BRQ: "Brno", PED: "Pardubice", BER: "Berlin", DRS: "Drezno", LEJ: "Lipsk/Halle", HAM: "Hamburg",
+};
+
+// Repozytorium wynika z adresu strony: <owner>.github.io/<repo>/
+const OWNER = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "HappyChocolat3";
+const REPO = location.hostname.endsWith(".github.io") ? location.pathname.split("/")[1] : "skaner-lot-w-";
+const API = `https://api.github.com/repos/${OWNER}/${REPO}`;
+const BRANCH = "main";
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = (n) => Math.round(n).toLocaleString("pl-PL").replace(/ /g, " ");
+const flag = (cc) => cc ? String.fromCodePoint(...[...cc.toUpperCase()].map((c) => 127397 + c.charCodeAt(0))) : "🌍";
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch {} },
+};
+
+let catalog = [];
+let saved = [];      // kierunki zapisane w repo
+let selected = [];   // kierunki po zmianach na stronie
+let state = { routes: {} };
+
+function token() { return store.get("gh_token"); }
+
+async function gh(path, opts = {}) {
+  const headers = { Accept: "application/vnd.github+json", ...(opts.headers || {}) };
+  if (token()) headers.Authorization = `Bearer ${token()}`;
+  const res = await fetch(path.startsWith("http") ? path : API + path, { ...opts, headers, cache: "no-store" });
+  if (!res.ok) {
+    let msg = `${res.status}`;
+    try { msg += ` ${(await res.json()).message}`; } catch {}
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
+  }
+  return res.status === 204 ? null : res;
+}
+
+async function readFile(path) {
+  try {
+    const res = await gh(`/contents/${path}?ref=${BRANCH}`, { headers: { Accept: "application/vnd.github.raw+json" } });
+    return await res.json();
+  } catch (e) {
+    // limit zapytań bez tokenu (60/h) – zapasowo surowy plik
+    const res = await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${path}?t=${Date.now()}`);
+    if (!res.ok) throw e;
+    return res.json();
+  }
+}
+
+function destName(code) {
+  const d = catalog.find((x) => x.code === code);
+  return d ? `${flag(d.country)} ${d.name}` : `🌍 ${code}`;
+}
+
+function monthLabel(m, full) {
+  const [y, mm] = m.split("-");
+  return `${(full ? MONTHS_FULL : MONTHS)[+mm - 1]} ${y}`;
+}
+
+function shortDate(iso) {
+  const [, m, d] = iso.split("-");
+  return `${d}.${m}`;
+}
+
+function originName(code) { return ORIGINS[code] ? `${ORIGINS[code]} (${code})` : code; }
+
+/* ---------- wybór kierunków ---------- */
+
+function renderChips() {
+  $("chips").innerHTML = selected.length
+    ? selected.map((c) => `
+        <span class="chip${saved.includes(c) ? "" : " new"}">
+          ${esc(destName(c))} <span class="muted">${esc(c)}</span>
+          <button type="button" data-remove="${esc(c)}" aria-label="Usuń ${esc(c)}">✕</button>
+        </span>`).join("")
+    : `<span class="muted">Brak kierunków – dodaj przynajmniej jeden.</span>`;
+  const changed = JSON.stringify(selected) !== JSON.stringify(saved);
+  $("save").disabled = !changed || selected.length === 0;
+  $("reset").hidden = !changed;
+}
+
+function suggestions(q) {
+  q = q.trim().toLowerCase();
+  if (!q) return [];
+  const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace("ł", "l");
+  const nq = norm(q);
+  const list = catalog
+    .filter((d) => !selected.includes(d.code))
+    .filter((d) => d.code.toLowerCase().startsWith(q) || norm(d.name).includes(nq))
+    .slice(0, 8)
+    .map((d) => ({ code: d.code, label: `${flag(d.country)} ${d.name}` }));
+  if (/^[a-z]{3}$/i.test(q) && !list.some((d) => d.code === q.toUpperCase()) && !selected.includes(q.toUpperCase())) {
+    list.push({ code: q.toUpperCase(), label: `Dodaj kod lotniska ${q.toUpperCase()}` });
+  }
+  return list;
+}
+
+let activeIdx = 0;
+function renderSuggest() {
+  const items = suggestions($("q").value);
+  const box = $("suggest");
+  if (!items.length) { box.hidden = true; return; }
+  activeIdx = Math.min(activeIdx, items.length - 1);
+  box.innerHTML = items.map((d, i) => `
+    <button type="button" data-add="${esc(d.code)}" class="${i === activeIdx ? "active" : ""}">
+      <span>${esc(d.label)}</span><span class="code">${esc(d.code)}</span>
+    </button>`).join("");
+  box.hidden = false;
+}
+
+function addDest(code) {
+  if (selected.length >= MAX_DEST) { setStatus(`Maksymalnie ${MAX_DEST} kierunków – każdy wydłuża skan.`, "err"); return; }
+  if (!selected.includes(code)) selected.push(code);
+  $("q").value = "";
+  $("suggest").hidden = true;
+  setStatus("");
+  renderChips();
+}
+
+function setStatus(text, kind = "") {
+  $("status").textContent = text;
+  $("status").className = `status ${kind}`;
+}
+
+async function saveDestinations() {
+  if (!token()) {
+    $("tokenBox").open = true;
+    $("tokenBox").scrollIntoView({ behavior: "smooth" });
+    setStatus("Najpierw dodaj token GitHuba (niżej).", "err");
+    return;
+  }
+  $("save").disabled = true;
+  setStatus("Zapisywanie…");
+  try {
+    const meta = await (await gh(`/contents/data/settings.json?ref=${BRANCH}`)).json().catch(() => ({}));
+    const content = JSON.stringify({ destinations: selected }, null, 2) + "\n";
+    await gh(`/contents/data/settings.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: `Kierunki: ${selected.join(", ")}`,
+        content: btoa(unescape(encodeURIComponent(content))),
+        sha: meta.sha,
+        branch: BRANCH,
+      }),
+    });
+    saved = [...selected];
+    renderChips();
+    renderResults();
+    await gh(`/actions/workflows/scan.yml/dispatches`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ref: BRANCH }),
+    });
+    setStatus("Zapisane. Skan ruszył – raport przyjdzie na Telegram za kilka minut.", "ok");
+    watchScan();
+  } catch (e) {
+    $("save").disabled = false;
+    setStatus(e.status === 401 || e.status === 403 || e.status === 404
+      ? "GitHub odrzucił token – sprawdź uprawnienia Contents i Actions (Read and write)."
+      : `Nie udało się zapisać: ${e.message}`, "err");
+  }
+}
+
+async function watchScan() {
+  const started = Date.now();
+  await new Promise((r) => setTimeout(r, 8000));
+  while (Date.now() - started < 20 * 60 * 1000) {
+    try {
+      const runs = await (await gh(`/actions/workflows/scan.yml/runs?per_page=1&event=workflow_dispatch`)).json();
+      const run = runs.workflow_runs?.[0];
+      if (run && run.status === "completed" && new Date(run.created_at).getTime() > started - 60000) {
+        if (run.conclusion === "success") {
+          setStatus("Skan zakończony – ceny zaktualizowane.", "ok");
+          await loadData();
+        } else {
+          setStatus(`Skan zakończył się błędem – szczegóły w zakładce Actions.`, "err");
+        }
+        return;
+      }
+      if (run && run.status !== "completed") setStatus("Skanowanie w toku… (zwykle 2–5 min na kierunek)");
+    } catch {}
+    await new Promise((r) => setTimeout(r, 20000));
+  }
+}
+
+/* ---------- wyniki ---------- */
+
+function monthsWindow() {
+  const keys = new Set();
+  for (const code of saved) Object.keys(state.routes[code] || {}).forEach((k) => keys.add(k));
+  const now = new Date();
+  const first = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  return [...keys].filter((k) => k >= first).sort();
+}
+
+function renderResults() {
+  const months = monthsWindow();
+  const out = saved.map((code) => {
+    const route = state.routes[code];
+    const head = `<div class="dest-head"><div><h2>${esc(destName(code))} <span class="muted">${esc(code)}</span></h2>`;
+    if (!route) {
+      return `<section class="card">${head}<p class="sub">Czeka na pierwszy skan.</p></div></div>
+        <p class="empty-note">Ceny pojawią się tutaj po najbliższym skanie.</p></section>`;
+    }
+    const entries = months.map((m) => ({ m, e: route[m] || {} }));
+    const withOffers = entries.filter((x) => x.e.current);
+    const checked = entries.map((x) => x.e.checked_at).filter(Boolean).sort().pop();
+    const best = withOffers.reduce((a, x) => (!a || x.e.current.price < a.e.current.price ? x : a), null);
+    const hero = best ? `
+      <div class="hero">
+        <div class="label">najtaniej</div>
+        <div class="value">${fmt(best.e.current.price)} zł</div>
+        <div class="when">${esc(monthLabel(best.m, true))} · z ${esc(ORIGINS[best.e.current.origin] || best.e.current.origin)}</div>
+      </div>` : "";
+    const sub = checked ? `Sprawdzono ${new Date(checked).toLocaleString("pl-PL", { dateStyle: "short", timeStyle: "short" })}` : "";
+    const chart = withOffers.length ? chartSvg(code, entries, best) : "";
+    const list = withOffers.length
+      ? `<ul class="offers">${withOffers.map((x) => offerRow(x.m, x.e)).join("")}</ul>`
+      : `<p class="empty-note">Na razie brak ofert w żadnym miesiącu.</p>`;
+    const emptyMonths = entries.filter((x) => !x.e.current).map((x) => x.m);
+    const emptyNote = withOffers.length && emptyMonths.length
+      ? `<p class="empty-note">Brak ofert: ${esc(ranges(emptyMonths, months))}. Linie sprzedają bilety ok. 11–12 miesięcy do przodu.</p>` : "";
+    return `<section class="card">${head}<p class="sub">${esc(sub)}</p></div>${hero}</div>${chart}${list}${emptyNote}</section>`;
+  });
+  $("results").innerHTML = out.join("") || `<p class="skeleton">Dodaj kierunek, żeby zobaczyć ceny.</p>`;
+}
+
+function ranges(sel, all) {
+  const runs = [];
+  let prev = -2;
+  for (const m of sel) {
+    const i = all.indexOf(m);
+    if (i === prev + 1) runs[runs.length - 1][1] = m; else runs.push([m, m]);
+    prev = i;
+  }
+  return runs.map(([a, b]) => a === b ? monthLabel(a)
+    : a.slice(0, 4) === b.slice(0, 4) ? `${monthLabel(a).split(" ")[0]}–${monthLabel(b)}`
+    : `${monthLabel(a)} – ${monthLabel(b)}`).join(", ");
+}
+
+function offerRow(m, e) {
+  const o = e.current;
+  const days = o.return_date ? Math.round((new Date(o.return_date) - new Date(o.departure_date)) / 864e5) : null;
+  const when = shortDate(o.departure_date) + (o.return_date ? ` – ${shortDate(o.return_date)} (${days} dni)` : "");
+  const transfers = Math.max(o.transfers || 0, o.return_transfers || 0);
+  const tags = [
+    transfers === 0 ? "bezpośredni" : `przesiadki: ${transfers}`,
+    o.airline ? `linia ${o.airline}` : "",
+    o.effective_price > o.price ? `+${fmt(o.effective_price - o.price)} zł dojazd` : "",
+  ].filter(Boolean).map((t) => `<span class="tag">${esc(t)}</span>`);
+  if (e.best && e.best.effective_price < o.effective_price) {
+    tags.push(`<span class="tag">min. dotąd ${fmt(e.best.price)} zł</span>`);
+  }
+  const link = /^https:\/\//.test(o.link || "") ? `<a class="buy" href="${esc(o.link)}" target="_blank" rel="noopener">Oferta →</a>` : "";
+  return `<li class="offer">
+    <span class="m">${esc(monthLabel(m))}</span>
+    <span class="p">${fmt(o.price)} zł</span>
+    ${link}
+    <span class="d">${esc(originName(o.origin))} · ${esc(when)}</span>
+    <span class="tags">${tags.join("")}</span>
+  </li>`;
+}
+
+function chartSvg(code, entries, best) {
+  const prices = entries.filter((x) => x.e.current).map((x) => x.e.current.price);
+  const max = Math.max(...prices);
+  const step = niceStep(max);
+  const top = Math.ceil(max / step) * step;
+  const slot = 26, barW = 16, left = 44, h = 170, plotTop = 12, plotH = 118;
+  const width = left + entries.length * slot + 8;
+  const y = (v) => plotTop + plotH - (v / top) * plotH;
+  let svg = `<svg width="${width}" height="${h}" viewBox="0 0 ${width} ${h}" role="img" aria-label="Najniższa cena w kolejnych miesiącach – ${esc(code)}">`;
+  for (let v = 0; v <= top; v += step) {
+    svg += `<line class="grid" x1="${left}" x2="${width - 4}" y1="${y(v)}" y2="${y(v)}"/>`;
+    svg += `<text x="${left - 6}" y="${y(v) + 4}" text-anchor="end">${v >= 1000 ? `${v / 1000}k` : v}</text>`;
+  }
+  entries.forEach((x, i) => {
+    const cx = left + i * slot + slot / 2;
+    const [yy, mm] = x.m.split("-");
+    svg += `<text x="${cx}" y="${plotTop + plotH + 16}" text-anchor="middle">${MONTHS[+mm - 1]}</text>`;
+    if (mm === "01" || i === 0) svg += `<text x="${cx}" y="${plotTop + plotH + 30}" text-anchor="middle" style="font-weight:600">${yy}</text>`;
+    const o = x.e.current;
+    if (!o) {
+      svg += `<rect class="empty" x="${cx - barW / 2}" y="${plotTop + plotH - 2}" width="${barW}" height="2" rx="1"/>`;
+      return;
+    }
+    const by = y(o.price), bh = plotTop + plotH - by, r = Math.min(4, bh / 2);
+    const x0 = cx - barW / 2, x1 = cx + barW / 2, base = plotTop + plotH;
+    // słupek z zaokrągloną górą, prosty przy osi
+    const d = `M${x0},${base} V${by + r} Q${x0},${by} ${x0 + r},${by} H${x1 - r} Q${x1},${by} ${x1},${by + r} V${base} Z`;
+    const isBest = best && best.m === x.m;
+    svg += `<rect class="hit" x="${cx - slot / 2}" y="${plotTop}" width="${slot}" height="${plotH}" data-tip="${esc(tipText(x.m, o))}"/>`;
+    svg += `<path class="bar${isBest ? " best" : ""}" d="${d}"/>`;  // rysowany na wierzchu, ale bez zdarzeń wskaźnika
+    if (isBest) svg += `<text x="${cx}" y="${by - 5}" text-anchor="middle" style="font-weight:700;fill:var(--text)">${(o.price / 1000).toFixed(1).replace(".", ",")}k</text>`;
+  });
+  return `<div class="chart">${svg}</svg></div>`;
+}
+
+function niceStep(max) {
+  const raw = max / 4;
+  const pow = 10 ** Math.floor(Math.log10(raw));
+  return [1, 2, 2.5, 5, 10].map((m) => m * pow).find((s) => s >= raw);
+}
+
+function tipText(m, o) {
+  const when = shortDate(o.departure_date) + (o.return_date ? `–${shortDate(o.return_date)}` : "");
+  return `${monthLabel(m, true)}|${fmt(o.price)} zł|${originName(o.origin)} · ${when}`;
+}
+
+/* ---------- tooltip ---------- */
+
+function showTip(el, clientX, clientY) {
+  const [title, price, detail] = el.dataset.tip.split("|");
+  const tip = $("tip");
+  tip.innerHTML = `${esc(title)}<br><b>${esc(price)}</b><br><span class="muted">${esc(detail)}</span>`;
+  tip.style.display = "block";
+  const w = tip.offsetWidth, hgt = tip.offsetHeight;
+  tip.style.left = `${Math.min(window.innerWidth - w - 8, Math.max(8, clientX - w / 2))}px`;
+  tip.style.top = `${Math.max(8, clientY - hgt - 14)}px`;
+}
+document.addEventListener("pointerover", (e) => { if (e.target.dataset?.tip) showTip(e.target, e.clientX, e.clientY); });
+document.addEventListener("pointermove", (e) => { if (e.target.dataset?.tip) showTip(e.target, e.clientX, e.clientY); });
+document.addEventListener("pointerout", (e) => { if (e.target.dataset?.tip) $("tip").style.display = "none"; });
+document.addEventListener("scroll", () => { $("tip").style.display = "none"; }, { passive: true });
+
+/* ---------- start ---------- */
+
+async function loadData() {
+  const [cat, settings, st] = await Promise.all([
+    readFile("data/destinations.json").catch(() => []),
+    readFile("data/settings.json").catch(() => ({ destinations: ["LAS"] })),
+    readFile("data/state.json").catch(() => ({ routes: {} })),
+  ]);
+  catalog = cat;
+  const changed = JSON.stringify(selected) !== JSON.stringify(saved);
+  saved = settings.destinations || [];
+  if (!changed) selected = [...saved];
+  state = st;
+  renderChips();
+  renderResults();
+  $("footer").innerHTML = `Ceny: Travelpayouts / Aviasales · przed zakupem sprawdź cenę pod linkiem<br>
+    <a href="https://github.com/${esc(OWNER)}/${esc(REPO)}" target="_blank" rel="noopener">${esc(OWNER)}/${esc(REPO)}</a>`;
+}
+
+$("maxDest").textContent = MAX_DEST;
+$("repoName").textContent = `${OWNER}/${REPO}`;
+$("token").value = token() ? "••••••••" : "";
+$("q").addEventListener("input", () => { activeIdx = 0; renderSuggest(); });
+$("q").addEventListener("focus", renderSuggest);
+$("q").addEventListener("keydown", (e) => {
+  const items = [...$("suggest").querySelectorAll("button")];
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    activeIdx = (activeIdx + (e.key === "ArrowDown" ? 1 : -1) + items.length) % Math.max(items.length, 1);
+    renderSuggest();
+  } else if (e.key === "Enter" && items[activeIdx]) {
+    e.preventDefault();
+    addDest(items[activeIdx].dataset.add);
+  } else if (e.key === "Escape") {
+    $("suggest").hidden = true;
+  }
+});
+document.addEventListener("click", (e) => {
+  const add = e.target.closest("[data-add]");
+  const rm = e.target.closest("[data-remove]");
+  if (add) addDest(add.dataset.add);
+  else if (rm) { selected = selected.filter((c) => c !== rm.dataset.remove); renderChips(); }
+  else if (!e.target.closest(".search")) $("suggest").hidden = true;
+});
+$("reset").addEventListener("click", () => { selected = [...saved]; setStatus(""); renderChips(); });
+$("save").addEventListener("click", saveDestinations);
+$("tokenSave").addEventListener("click", async () => {
+  const v = $("token").value.trim();
+  if (!v || v.startsWith("•")) return;
+  store.set("gh_token", v);
+  $("tokenStatus").textContent = "Sprawdzanie…";
+  try {
+    await gh("");
+    $("token").value = "••••••••";
+    $("tokenStatus").textContent = "Token zapisany ✓";
+    $("tokenStatus").className = "status ok";
+  } catch (e) {
+    store.set("gh_token", null);
+    $("tokenStatus").textContent = `Token nie działa (${e.message}).`;
+    $("tokenStatus").className = "status err";
+  }
+});
+$("tokenClear").addEventListener("click", () => {
+  store.set("gh_token", null);
+  $("token").value = "";
+  $("tokenStatus").textContent = "Token usunięty.";
+  $("tokenStatus").className = "status";
+});
+
+loadData().catch((e) => {
+  $("results").innerHTML = `<p class="skeleton">Nie udało się wczytać danych (${esc(e.message)}).</p>`;
+});
+</script>
+</body>
+</html>
