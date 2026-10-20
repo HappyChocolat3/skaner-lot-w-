@@ -2,21 +2,20 @@
 
 Skaner najtańszych lotów, który działa w tle. Sprawdza ceny lotów z polskich lotnisk
 (oraz przygranicznych w Czechach i Niemczech) do wybranego celu, domyślnie **Las Vegas (LAS)**.
-Codziennie o **9, 12, 15 i 18** wysyła na **Telegram** raport z najtańszą ceną na każdy
-miesiąc (do grudnia 2028) i oznacza 🔥 miesiące, w których cena spadła do nowego minimum.
+Codziennie o **9, 12, 15 i 18** wysyła na **Telegram** raport z 3 najtańszymi ofertami
+dla każdego wybranego kierunku (pełna lista miesięcy do grudnia 2028 jest na stronie).
+🔥 oznacza nową najniższą cenę.
 
 Przykładowy raport:
 
 ```
 ✈️ Raport lotów: Las Vegas (LAS)
-19.10.2026, 12:03 · w obie strony, 7–21 dni
-🔥 = nowa najniższa cena
+20.10.2026, 18:00 · w obie strony, 7–21 dni
 
-🔥 lis 2026: 2 499 PLN · Berlin (BER) +150 dojazd · 03.11–15.11 (12 dni) · przesiadki: 1 · oferta (-7%)
-gru 2026: 2 681 PLN · Berlin (BER) +150 dojazd · 01.12–10.12 (9 dni) · przesiadki: 1 · oferta
-kwi 2027: 2 878 PLN · Warszawa Chopin (WAW) · 01.04–11.04 (10 dni) · przesiadki: 1 · oferta · min. dotąd 2 700
-
-Brak ofert: paź 2026, sty–mar 2027, maj 2027 – gru 2028
+1. gru 2026: 2 621 PLN · Berlin (BER) +150 dojazd · 01.12–10.12 (9 dni) · przesiadki: 1 · oferta
+2. lis 2026: 2 842 PLN · Berlin (BER) +150 dojazd · 24.11–01.12 (7 dni) · przesiadki: 2 · oferta
+3. kwi 2027: 2 878 PLN · Berlin (BER) +150 dojazd · 01.04–11.04 (10 dni) · przesiadki: 1 · oferta
+…i 1 droższy miesiąc na stronie
 ```
 
 ## Jak to działa
@@ -115,6 +114,7 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 - **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
   `cron` w `.github/workflows/scan.yml` (godziny w UTC; workflow startuje co 10 minut i sam
   sprawdza, czy to pora raportu).
+- **Długość raportu:** `report_top = 3` – ile najtańszych ofert na kierunek.
 - **Oznaczenie 🔥:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli oznaczenie,
   gdy cena spadnie poniżej podanej kwoty.
 

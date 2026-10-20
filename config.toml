@@ -43,9 +43,13 @@ OSR = 80
 # "telegram" albo "console" (tylko log, bez wysyłki)
 channel = "telegram"
 
-# Godziny wysyłania raportu z najtańszymi cenami na każdy miesiąc.
+# Godziny wysyłania raportu z najtańszymi ofertami.
 report_hours = [9, 12, 15, 18]
 timezone = "Europe/Warsaw"
+
+# Ile najtańszych ofert (miesięcy) pokazać w raporcie dla każdego kierunku.
+# Pełna lista jest na stronie.
+report_top = 3
 
 # Miesiąc dostaje w raporcie oznaczenie 🔥, gdy cena spadła poniżej dotychczasowego
 # minimum o co najmniej tyle procent.
