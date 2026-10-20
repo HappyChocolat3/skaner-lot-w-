@@ -143,12 +143,14 @@ class ScannerTest(unittest.TestCase):
         hours = [9, 12, 15, 18]
         day = datetime(2026, 10, 19)
         slot = lambda h, m: report_slot(day.replace(hour=h, minute=m), hours)
-        self.assertIsNone(slot(7, 45))
-        self.assertEqual(slot(8, 45), "2026-10-19 09")  # cron chwilę przed czasem
+        self.assertIsNone(slot(8, 45))
+        self.assertEqual(slot(8, 55), "2026-10-19 09")  # chwilę przed czasem, bo skan trwa
         self.assertEqual(slot(9, 50), "2026-10-19 09")
-        self.assertEqual(slot(11, 45), "2026-10-19 12")
-        self.assertEqual(slot(17, 45), "2026-10-19 18")
-        self.assertEqual(slot(23, 50), "2026-10-19 18")
+        self.assertEqual(slot(11, 0), "2026-10-19 09")
+        self.assertIsNone(slot(11, 10))                  # za późno na raport z 9:00
+        self.assertEqual(slot(11, 55), "2026-10-19 12")
+        self.assertEqual(slot(19, 30), "2026-10-19 18")
+        self.assertIsNone(slot(22, 42))
 
     def test_past_months_pruned(self):
         state = State(self.state_path)

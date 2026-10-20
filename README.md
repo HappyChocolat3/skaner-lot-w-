@@ -67,8 +67,9 @@ i dodaj sekrety:
 | `TELEGRAM_CHAT_ID` | id czatu z kroku 2 |
 
 Workflow `.github/workflows/scan.yml` musi być na domyślnej gałęzi (`main`).
-Raporty przychodzą wtedy o 9, 12, 15 i 18. GitHub czasem opóźnia zaplanowane zadania,
-więc raport może przyjść kilkanaście–kilkadziesiąt minut później. Raport na żądanie:
+Raporty przychodzą wtedy o 9, 12, 15 i 18. GitHub potrafi opóźniać, a nawet pomijać
+zaplanowane zadania, dlatego workflow startuje co 10 minut i wysyła raport przy pierwszej
+okazji. Raport spóźniony o ponad 2 godziny jest pomijany. Raport na żądanie:
 *Actions → Skan lotów → Run workflow*.
 
 ### 4. Strona z cenami i wyborem kierunków (GitHub Pages)
@@ -112,7 +113,8 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 - **Koszt dojazdu** do lotnisk w CZ/DE: sekcja `[search.extra_cost]`.
 - **Zakres miesięcy:** `until = "2028-12"` albo `months_ahead = 12`.
 - **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
-  `cron` w `.github/workflows/scan.yml` (godziny w UTC, uruchamiane ok. 15 minut przed raportem).
+  `cron` w `.github/workflows/scan.yml` (godziny w UTC; workflow startuje co 10 minut i sam
+  sprawdza, czy to pora raportu).
 - **Oznaczenie 🔥:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli oznaczenie,
   gdy cena spadnie poniżej podanej kwoty.
 
