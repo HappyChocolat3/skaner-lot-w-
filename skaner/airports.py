@@ -1,6 +1,9 @@
 """Lotniska wylotowe dogodne z Polski: polskie + przygraniczne w Czechach i Niemczech."""
 
+import json
 from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -43,19 +46,19 @@ AIRPORTS: dict[str, Airport] = {
 }
 
 
-# Nazwy popularnych celów (tylko do ładniejszych wiadomości – działa każdy kod IATA)
-DESTINATION_NAMES = {
-    "LAS": "Las Vegas",
-    "LAX": "Los Angeles",
-    "JFK": "Nowy Jork",
-    "NYC": "Nowy Jork",
-    "MIA": "Miami",
-    "BKK": "Bangkok",
-    "DXB": "Dubaj",
-}
+CATALOG_PATH = Path(__file__).resolve().parent.parent / "data" / "destinations.json"
+
+
+@cache
+def destination_names() -> dict[str, str]:
+    """Nazwy celów z katalogu używanego też przez stronę (działa każdy kod IATA, katalog to tylko nazwy)."""
+    try:
+        return {d["code"]: d["name"] for d in json.loads(CATALOG_PATH.read_text(encoding="utf-8"))}
+    except (OSError, ValueError, KeyError):
+        return {}
 
 
 def describe(code: str) -> str:
     a = AIRPORTS.get(code)
-    name = a.city if a else DESTINATION_NAMES.get(code)
+    name = a.city if a else destination_names().get(code)
     return f"{name} ({code})" if name else code

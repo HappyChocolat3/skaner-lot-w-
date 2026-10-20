@@ -27,7 +27,7 @@ log = logging.getLogger("skaner")
 
 
 def run_once(args) -> int:
-    cfg = load_config(args.config)
+    cfg = load_config(args.config, args.settings)
     if args.dest:
         cfg.search.destinations = [d.upper() for d in args.dest]
     state = State(args.state)
@@ -55,6 +55,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(prog="skaner", description="Skaner najtańszych lotów")
     parser.add_argument("--config", default="config.toml")
     parser.add_argument("--state", default="data/state.json")
+    parser.add_argument("--settings", default="data/settings.json", help="kierunki wybrane na stronie")
     parser.add_argument("-v", "--verbose", action="store_true")
     sub = parser.add_subparsers(dest="cmd", required=True)
 

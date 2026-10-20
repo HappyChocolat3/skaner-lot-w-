@@ -71,6 +71,22 @@ Raporty przychodzą wtedy o 9, 12, 15 i 18. GitHub czasem opóźnia zaplanowane 
 więc raport może przyjść kilkanaście–kilkadziesiąt minut później. Raport na żądanie:
 *Actions → Skan lotów → Run workflow*.
 
+### 4. Strona z cenami i wyborem kierunków (GitHub Pages)
+Strona w `docs/` pokazuje ceny na każdy miesiąc (wykres i lista ofert z linkami) i pozwala
+wybrać, dokąd bot ma szukać lotów, także z telefonu.
+
+1. Włącz GitHub Pages: *Settings → Pages → Build and deployment → Source: Deploy from a branch*,
+   gałąź `main`, folder `/docs`, *Save*. Po minucie strona będzie pod adresem
+   `https://<twój-login>.github.io/skaner-lot-w-/`.
+2. Żeby zapisywać kierunki, utwórz token na
+   <https://github.com/settings/personal-access-tokens/new>: dostęp tylko do tego repozytorium,
+   uprawnienia **Contents** i **Actions** ustawione na *Read and write*. Wklej go na stronie
+   w sekcji „Połączenie z GitHubem”. Token zostaje tylko w Twojej przeglądarce.
+3. Dodaj kierunki i kliknij **Zapisz i skanuj**. Strona zapisze je w `data/settings.json`
+   i uruchomi skan, a raport przyjdzie na Telegram po kilku minutach.
+
+Kierunki z `data/settings.json` mają pierwszeństwo przed listą w `config.toml`.
+
 ### Alternatywa: uruchomienie lokalnie (Python 3.11+, bez dodatkowych bibliotek)
 
 ```bash
@@ -86,7 +102,9 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 
 ## Dostosowanie (`config.toml`)
 
-- **Inny cel:** `destinations = ["LAS", "JFK"]`, albo jednorazowo `python -m skaner run --dest BKK`.
+- **Inny cel:** najprościej na stronie (patrz wyżej). Bez strony: `data/settings.json`
+  (`{"destinations": ["LAS", "BKK"]}`) albo jednorazowo `python -m skaner run --dest BKK`.
+  Nazwy celów na stronie i w raportach pochodzą z `data/destinations.json`.
 - **Lotniska wylotowe:** lista `origins`. Wszystkie znane lotniska wypisze
   `python -m skaner airports`. `origins = ["ALL"]` oznacza wszystkie z listy.
 - **Lot w jedną stronę:** `one_way = true`.

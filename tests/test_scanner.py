@@ -7,7 +7,8 @@ from unittest import mock
 from datetime import date, datetime
 from pathlib import Path
 
-from skaner.config import Config, NotifyConfig, SearchConfig
+from skaner.airports import describe
+from skaner.config import Config, NotifyConfig, SearchConfig, load_config
 from skaner.models import Offer
 from skaner.notifier import TelegramNotifier, split_message
 from skaner.providers.base import Provider
@@ -154,6 +155,19 @@ class ScannerTest(unittest.TestCase):
         state.month("LAS", "2026-09")["best"] = {"effective_price": 1}
         scan(make_cfg(), FakeProvider({}), state, today=TODAY, request_delay=0)
         self.assertNotIn("2026-09", state.data["routes"]["LAS"])
+
+
+class ConfigTest(unittest.TestCase):
+    def test_settings_override_destinations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            settings = Path(tmp) / "settings.json"
+            settings.write_text('{"destinations": ["BKK", "NYC"]}')
+            self.assertEqual(load_config("config.toml", settings).search.destinations, ["BKK", "NYC"])
+            self.assertEqual(load_config("config.toml", Path(tmp) / "brak.json").search.destinations, ["LAS"])
+
+    def test_destination_names_from_catalog(self):
+        self.assertEqual(describe("BKK"), "Bangkok (BKK)")
+        self.assertEqual(describe("XYZ"), "XYZ")
 
 
 class TravelpayoutsParseTest(unittest.TestCase):

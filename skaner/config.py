@@ -1,3 +1,4 @@
+import json
 import os
 import tomllib
 from dataclasses import dataclass, field
@@ -41,9 +42,14 @@ def _opt(value):
     return value or None
 
 
-def load_config(path: str | Path) -> Config:
+def load_config(path: str | Path, settings_path: str | Path | None = None) -> Config:
+    """Wczytuje config.toml; kierunki z pliku ustawień strony (data/settings.json) mają pierwszeństwo."""
     with open(path, "rb") as f:
         raw = tomllib.load(f)
+    if settings_path and Path(settings_path).exists():
+        settings = json.loads(Path(settings_path).read_text(encoding="utf-8"))
+        if settings.get("destinations"):
+            raw.setdefault("search", {})["destinations"] = settings["destinations"]
 
     s = raw.get("search", {})
     origins = [c.upper() for c in s.get("origins", [])]
