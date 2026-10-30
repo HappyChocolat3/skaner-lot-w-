@@ -1,82 +1,82 @@
 {
   "filters": "one_way=False;transfers=2;days=10-15;PLN",
-  "last_report": "2026-10-29 18",
+  "last_report": "2026-10-30 09",
   "routes": {
     "LAS": {
       "2027-06": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       }
     },
@@ -97,7 +97,7 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null,
         "last_alert_price": 2902.0
       },
@@ -107,27 +107,27 @@
           "currency": "PLN",
           "departure_date": "2027-07-12",
           "destination": "LAX",
-          "effective_price": 3624.0,
-          "found_at": "2026-10-29T18:26:55+00:00",
-          "link": "https://www.aviasales.com/search/WAW1207LAX25071?t=AY18153972001815433980001153WAWHELORDLAX18165213601816624800001184LAXORDHELWAW_85ae55077604ac613572c4bb0b4ebd97_74270&search_date=29102026&expected_price_uuid=01a187df-3bf1-8030-27e7-031fa4b824af&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ETbF53YCXA-6WR4iaSCszQ&expected_price_source=share&expected_price_currency=pln&expected_price=3624",
+          "effective_price": 3619.0,
+          "found_at": "2026-10-30T08:01:14+00:00",
+          "link": "https://www.aviasales.com/search/WAW1207LAX25071?t=AY18153972001815433980001153WAWHELORDLAX18165213601816624800001184LAXORDHELWAW_85ae55077604ac613572c4bb0b4ebd97_74270&search_date=29102026&expected_price_uuid=01a187df-3bf1-8030-27e7-031fa4b824af&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ETbF53YCXA-6WR4iaSCszQ&expected_price_source=share&expected_price_currency=pln&expected_price=3619",
           "origin": "WAW",
-          "price": 3624.0,
+          "price": 3619.0,
           "return_date": "2027-07-25",
           "return_transfers": 2,
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": {
           "airline": "AY",
           "currency": "PLN",
           "departure_date": "2027-07-12",
           "destination": "LAX",
-          "effective_price": 3624.0,
-          "found_at": "2026-10-29T19:01:18+00:00",
-          "link": "https://www.aviasales.com/search/WAW1207LAX25071?t=AY18153972001815433980001153WAWHELORDLAX18165213601816624800001184LAXORDHELWAW_85ae55077604ac613572c4bb0b4ebd97_74270&search_date=29102026&expected_price_uuid=01a187df-3bf1-8030-27e7-031fa4b824af&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ETbF53YCXA-6WR4iaSCszQ&expected_price_source=share&expected_price_currency=pln&expected_price=3624",
+          "effective_price": 3619.0,
+          "found_at": "2026-10-30T08:01:14+00:00",
+          "link": "https://www.aviasales.com/search/WAW1207LAX25071?t=AY18153972001815433980001153WAWHELORDLAX18165213601816624800001184LAXORDHELWAW_85ae55077604ac613572c4bb0b4ebd97_74270&search_date=29102026&expected_price_uuid=01a187df-3bf1-8030-27e7-031fa4b824af&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=ETbF53YCXA-6WR4iaSCszQ&expected_price_source=share&expected_price_currency=pln&expected_price=3619",
           "origin": "WAW",
-          "price": 3624.0,
+          "price": 3619.0,
           "return_date": "2027-07-25",
           "return_transfers": 2,
           "source": "travelpayouts",
@@ -136,7 +136,7 @@
         "last_alert_price": 3624.0
       },
       "2027-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-09": {
@@ -155,68 +155,68 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null,
         "last_alert_price": 3040.0
       },
       "2027-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       }
     },
@@ -237,14 +237,14 @@
           "source": "travelpayouts",
           "transfers": 2
         },
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2027-06-26",
           "destination": "MIA",
           "effective_price": 2938.0,
-          "found_at": "2026-10-29T19:01:18+00:00",
+          "found_at": "2026-10-30T08:01:14+00:00",
           "link": "https://www.aviasales.com/search/WAW2606MIA10071?t=BA18140358001814127300001885WAWLHRLGWMCOMIA18152592001815389700001815MIALHRWAW_5a8b729bfdc59dfb7c6416800b39ef7a_60048&search_date=27102026&expected_price_uuid=01a17c2a-1bdd-8031-6a0f-aeac92bae865&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=FETKHj2Aclnh_KQg8Permg&expected_price_source=share&expected_price_currency=pln&expected_price=2938",
           "origin": "WAW",
           "price": 2938.0,
@@ -271,76 +271,76 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null,
         "last_alert_price": 2812.0
       },
       "2027-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-10-29T19:01:18+00:00",
+        "checked_at": "2026-10-30T08:01:14+00:00",
         "current": null
       }
     }
