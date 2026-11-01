@@ -4,22 +4,34 @@ import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .airports import AIRPORTS
+from .airports import AIRPORTS, HOME
+
+
+@dataclass(frozen=True)
+class Leg:
+    """Jeden lot w jedną stronę na trasie, np. PL>LAS (z dowolnego lotniska domowego do Vegas)."""
+
+    id: str
+    origins: tuple[str, ...]
+    destinations: tuple[str, ...]
 
 
 @dataclass
 class SearchConfig:
-    destinations: list[str]
-    origins: list[str]
+    destinations: list[str]  # przystanki trasy, po kolei
+    origins: list[str]       # lotniska domowe (wylot i powrót)
     months_ahead: int = 12
     until: str | None = None
     since: str | None = None
-    one_way: bool = False
     currency: str = "PLN"
     max_transfers: int | None = None
-    min_trip_days: int | None = None
-    max_trip_days: int | None = None
     extra_cost: dict[str, float] = field(default_factory=dict)
+
+    def legs(self) -> list[Leg]:
+        """Dom → przystanek 1 → … → przystanek N → dom, każdy odcinek w jedną stronę."""
+        points = [HOME, *self.destinations, HOME]
+        airports = lambda p: tuple(self.origins) if p == HOME else (p,)
+        return [Leg(f"{a}>{b}", airports(a), airports(b)) for a, b in zip(points, points[1:])]
 
 
 @dataclass
@@ -38,10 +50,6 @@ class Config:
     notify: NotifyConfig
     provider_name: str
     provider_settings: dict
-
-
-def _opt(value):
-    return value or None
 
 
 def load_config(path: str | Path, settings_path: str | Path | None = None) -> Config:
@@ -63,11 +71,8 @@ def load_config(path: str | Path, settings_path: str | Path | None = None) -> Co
         months_ahead=int(s.get("months_ahead", 12)),
         until=s.get("until"),
         since=s.get("since"),
-        one_way=bool(s.get("one_way", False)),
         currency=s.get("currency", "PLN").upper(),
         max_transfers=s.get("max_transfers"),
-        min_trip_days=_opt(s.get("min_trip_days")),
-        max_trip_days=_opt(s.get("max_trip_days")),
         extra_cost={k.upper(): float(v) for k, v in s.get("extra_cost", {}).items()},
     )
     if not search.destinations or not search.origins:

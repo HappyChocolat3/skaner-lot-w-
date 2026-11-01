@@ -1,23 +1,31 @@
 # skaner-lot-w-
 
-Skaner najtańszych lotów, który działa w tle. Sprawdza ceny lotów z polskich lotnisk
-(oraz przygranicznych w Czechach i Niemczech) do wybranego celu, domyślnie **Las Vegas (LAS)**.
-Codziennie o **9, 12, 15 i 18** wysyła na **Telegram** raport z 3 najtańszymi ofertami
-dla każdego wybranego kierunku, z wylotem od czerwca 2027 do grudnia 2028 (pełna lista
-miesięcy jest na stronie).
-🔥 oznacza nową najniższą cenę.
+Skaner najtańszych lotów, który działa w tle. Szuka lotów **w jedną stronę** po trasie:
+z Polski (i lotnisk przy granicy w Czechach i Niemczech) przez wybrane miejsca, po kolei,
+i z powrotem – domyślnie **Polska → Las Vegas → Miami → Polska**. Codziennie o **9, 12, 15 i 18**
+wysyła na **Telegram** raport z 3 najtańszymi lotami na każdym odcinku, z wylotem od czerwca 2027
+do grudnia 2028 (pełna lista miesięcy jest na stronie). 🔥 oznacza nową najniższą cenę.
 
 Przykładowy raport:
 
 ```
-✈️ Raport lotów: Las Vegas (LAS)
-20.10.2026, 18:00 · w obie strony, 10–15 dni, cze 2027 – gru 2028
+✈️ Raport lotów: Polska i okolice → Las Vegas → Miami → Polska i okolice
+01.11.2026, 09:00 · loty w jedną stronę, cze 2027 – gru 2028
 
-1. cze 2027: 2 752 PLN · Berlin (BER) +150 dojazd · 06.06–16.06 (10 dni) · przesiadki: 1 · oferta
-2. lip 2027: 2 812 PLN · Warszawa Chopin (WAW) · 03.07–15.07 (12 dni) · przesiadki: 1 · oferta
-3. wrz 2027: 3 040 PLN · Warszawa Chopin (WAW) · 21.09–05.10 (14 dni) · przesiadki: 1 · oferta
-…i 2 droższe miesiące na stronie
+1. Polska i okolice → Las Vegas (LAS)
+• 15.09.2027: 1 914 PLN · Katowice (KTW) → LAS · przesiadki: 1 · oferta
+• …
+
+2. Las Vegas (LAS) → Miami (MIA)
+• 08.11.2027: 454 PLN · LAS → MIA · bezpośredni · oferta
+• …
+
+3. Miami (MIA) → Polska i okolice
+• 18.10.2027: 1 724 PLN · MIA → Berlin (BER) (+150 dojazd) · przesiadki: 1 · oferta
+• …
 ```
+
+Każdy odcinek to osobna lista najtańszych lotów – daty nie są ze sobą dopasowywane.
 
 ## Jak to działa
 
@@ -72,21 +80,21 @@ zaplanowane zadania, dlatego workflow startuje co 10 minut i wysyła raport przy
 okazji. Raport spóźniony o ponad 2 godziny jest pomijany. Raport na żądanie:
 *Actions → Skan lotów → Run workflow*.
 
-### 4. Strona z cenami i wyborem kierunków (GitHub Pages)
+### 4. Strona z cenami i wyborem trasy (GitHub Pages)
 Strona w `docs/` pokazuje ceny na każdy miesiąc (wykres i lista ofert z linkami) i pozwala
 wybrać, dokąd bot ma szukać lotów, także z telefonu.
 
 1. Włącz GitHub Pages: *Settings → Pages → Build and deployment → Source: Deploy from a branch*,
    gałąź `main`, folder `/docs`, *Save*. Po minucie strona będzie pod adresem
    `https://<twój-login>.github.io/skaner-lot-w-/`.
-2. Żeby zapisywać kierunki, utwórz token na
+2. Żeby zapisywać trasę, utwórz token na
    <https://github.com/settings/personal-access-tokens/new>: dostęp tylko do tego repozytorium,
    uprawnienia **Contents** i **Actions** ustawione na *Read and write*. Wklej go na stronie
    w sekcji „Połączenie z GitHubem”. Token zostaje tylko w Twojej przeglądarce.
-3. Dodaj kierunki i kliknij **Zapisz i skanuj**. Strona zapisze je w `data/settings.json`
+3. Dodaj przystanki (po kolei) i kliknij **Zapisz i skanuj**. Strona zapisze je w `data/settings.json`
    i uruchomi skan, a raport przyjdzie na Telegram po kilku minutach.
 
-Kierunki z `data/settings.json` mają pierwszeństwo przed listą w `config.toml`.
+Przystanki z `data/settings.json` mają pierwszeństwo przed listą w `config.toml`.
 
 ### Alternatywa: uruchomienie lokalnie (Python 3.11+, bez dodatkowych bibliotek)
 
@@ -103,19 +111,19 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 
 ## Dostosowanie (`config.toml`)
 
-- **Inny cel:** najprościej na stronie (patrz wyżej). Bez strony: `data/settings.json`
-  (`{"destinations": ["LAS", "BKK"]}`) albo jednorazowo `python -m skaner run --dest BKK`.
+- **Inna trasa:** najprościej na stronie (patrz wyżej) – przystanki po kolei. Bez strony:
+  `data/settings.json` (`{"destinations": ["LAS", "MIA"]}`) albo jednorazowo
+  `python -m skaner run --dest BKK`. Jeden przystanek = lot tam i osobno lot z powrotem.
   Nazwy celów na stronie i w raportach pochodzą z `data/destinations.json`.
 - **Lotniska wylotowe:** lista `origins`. Wszystkie znane lotniska wypisze
   `python -m skaner airports`. `origins = ["ALL"]` oznacza wszystkie z listy.
-- **Lot w jedną stronę:** `one_way = true`.
-- **Filtry:** `max_transfers`, `min_trip_days`, `max_trip_days`.
+- **Przesiadki:** `max_transfers` (maks. na jednym locie).
 - **Koszt dojazdu** do lotnisk w CZ/DE: sekcja `[search.extra_cost]`.
 - **Zakres miesięcy:** `since = "2027-06"` (od kiedy) i `until = "2028-12"` (do kiedy) albo `months_ahead = 12`.
 - **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
   `cron` w `.github/workflows/scan.yml` (godziny w UTC; workflow startuje co 10 minut i sam
   sprawdza, czy to pora raportu).
-- **Długość raportu:** `report_top = 3` – ile najtańszych ofert na kierunek.
+- **Długość raportu:** `report_top = 3` – ile najtańszych ofert na odcinek trasy.
 - **Oznaczenie 🔥:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli oznaczenie,
   gdy cena spadnie poniżej podanej kwoty.
 
