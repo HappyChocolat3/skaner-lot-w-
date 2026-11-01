@@ -29,7 +29,8 @@ until = "2028-12"
 currency = "PLN"
 
 # Maks. liczba przesiadek na jednym locie (0 = tylko bezpośrednie). Usuń linię, żeby wyłączyć.
-max_transfers = 2
+# 1, bo loty z 2 przesiadkami trwają zwykle ok. doby.
+max_transfers = 1
 
 # Dodatkowy koszt dojazdu do/z lotniska (PLN). Uwzględniany przy porównaniu – i przy
 # wylocie, i przy powrocie – żeby np. lot z Berlina tańszy o 50 zł nie wygrywał z Warszawą.
