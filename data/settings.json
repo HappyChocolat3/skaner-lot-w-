@@ -1,7 +1,3 @@
 {
-  "destinations": [
-    "LAS",
-    "MIA",
-    "LAX"
-  ]
+  "destinations": ["LAS", "MIA"]
 }

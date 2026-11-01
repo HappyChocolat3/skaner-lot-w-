@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 class State:
-    """Struktura: {"routes": {"LAS": {"2026-12": {"best": {...}, "current": {...}}}}}"""
+    """Struktura: {"routes": {"PL>LAS": {"2027-06": {"best": {...}, "current": {...}}}}, "legs": [...]}"""
 
     def __init__(self, path: str | Path):
         self.path = Path(path)
@@ -18,8 +18,13 @@ class State:
     def is_empty(self) -> bool:
         return not self.data["routes"]
 
-    def month(self, destination: str, month: str) -> dict:
-        return self.data["routes"].setdefault(destination, {}).setdefault(month, {})
+    def month(self, route: str, month: str) -> dict:
+        return self.data["routes"].setdefault(route, {}).setdefault(month, {})
+
+    def keep_routes(self, routes: list[str]) -> None:
+        """Usuwa odcinki, których nie ma już na trasie."""
+        for r in [r for r in self.data["routes"] if r not in routes]:
+            del self.data["routes"][r]
 
     def prune_before(self, month: str) -> None:
         """Usuwa miesiące, które już minęły."""

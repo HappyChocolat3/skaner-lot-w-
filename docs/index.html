@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Skaner lotów</title>
-<meta name="description" content="Najtańsze loty z Polski i okolic – wybór kierunków i ceny na każdy miesiąc.">
+<meta name="description" content="Najtańsze loty z Polski i okolic – wybór trasy i ceny na każdy miesiąc.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
 <style>
 :root {
@@ -82,6 +82,8 @@ header p { margin: 4px 0 0; color: var(--text-2); }
   font-weight: 500;
 }
 .chip.new { outline: 2px dashed var(--accent); outline-offset: -2px; }
+.chips .home { padding: 6px 4px; color: var(--text-2); font-weight: 500; }
+.chips .arrow { align-self: center; color: var(--muted); }
 .chip button {
   border: 0; background: transparent; color: var(--text-2);
   width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 1rem; line-height: 1;
@@ -164,6 +166,7 @@ header p { margin: 4px 0 0; color: var(--text-2); }
 }
 .empty-note { color: var(--text-2); font-size: .9rem; margin: 12px 0 0; }
 details.token summary { cursor: pointer; font-weight: 600; }
+details.more summary { cursor: pointer; color: var(--accent); font-weight: 600; padding: 12px 0 4px; border-top: 1px solid var(--border); }
 details.token ol { color: var(--text-2); padding-left: 20px; font-size: .92rem; }
 details.token code { background: var(--surface-2); padding: 1px 5px; border-radius: 6px; }
 a { color: var(--accent); }
@@ -183,11 +186,11 @@ footer { margin-top: 24px; color: var(--muted); font-size: .85rem; text-align: c
   </header>
 
   <section class="card" id="picker">
-    <h2>Kierunki</h2>
-    <p class="sub">Wybierz, dokąd bot ma szukać lotów (maks. <span id="maxDest"></span>). Możesz wpisać miasto albo dowolny kod lotniska IATA.</p>
+    <h2>Trasa</h2>
+    <p class="sub">Bot szuka lotów w jedną stronę: z Polski (i lotnisk przy granicy) przez wybrane miejsca, po kolei, i z powrotem. Maks. <span id="maxDest"></span> przystanki. Możesz wpisać miasto albo dowolny kod lotniska IATA.</p>
     <div class="chips" id="chips"></div>
     <div class="search">
-      <input id="q" type="search" placeholder="Dodaj kierunek, np. Bangkok, Tokio, JFK…" autocomplete="off" aria-label="Dodaj kierunek">
+      <input id="q" type="search" placeholder="Dodaj przystanek, np. Bangkok, Tokio, JFK…" autocomplete="off" aria-label="Dodaj przystanek">
       <div class="suggest" id="suggest" hidden></div>
     </div>
     <div class="row">
@@ -202,7 +205,7 @@ footer { margin-top: 24px; color: var(--muted); font-size: .85rem; text-align: c
   <section class="card">
     <details class="token" id="tokenBox">
       <summary>Połączenie z GitHubem</summary>
-      <p class="sub" style="margin-top:10px">Żeby zapisać kierunki, strona potrzebuje tokenu GitHuba. Token zostaje tylko w tej przeglądarce.</p>
+      <p class="sub" style="margin-top:10px">Żeby zapisać trasę, strona potrzebuje tokenu GitHuba. Token zostaje tylko w tej przeglądarce.</p>
       <ol>
         <li>Otwórz <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com/settings/personal-access-tokens/new</a>.</li>
         <li>Nazwa: dowolna, np. <code>skaner-lotow</code>. Wygaśnięcie: np. 1 rok.</li>
@@ -227,7 +230,9 @@ footer { margin-top: 24px; color: var(--muted); font-size: .85rem; text-align: c
 
 <script>
 "use strict";
-const MAX_DEST = 5;
+const MAX_DEST = 4;
+const HOME = "PL";
+const HOME_NAME = "Polska i okolice";
 const MONTHS = ["sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru"];
 const MONTHS_FULL = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
 const ORIGINS = {
@@ -253,8 +258,8 @@ const store = {
 };
 
 let catalog = [];
-let saved = [];      // kierunki zapisane w repo
-let selected = [];   // kierunki po zmianach na stronie
+let saved = [];      // przystanki zapisane w repo
+let selected = [];   // przystanki po zmianach na stronie
 let state = { routes: {} };
 
 function token() { return store.get("gh_token"); }
@@ -295,23 +300,38 @@ function monthLabel(m, full) {
   return `${(full ? MONTHS_FULL : MONTHS)[+mm - 1]} ${y}`;
 }
 
-function shortDate(iso) {
-  const [, m, d] = iso.split("-");
-  return `${d}.${m}`;
+function fullDate(iso) {
+  const [y, m, d] = iso.split("-");
+  return `${d}.${m}.${y}`;
 }
 
-function originName(code) { return ORIGINS[code] ? `${ORIGINS[code]} (${code})` : code; }
+function airportName(code) {
+  if (ORIGINS[code]) return `${ORIGINS[code]} (${code})`;
+  const d = catalog.find((x) => x.code === code);
+  return d ? `${d.name} (${code})` : code;
+}
 
-/* ---------- wybór kierunków ---------- */
+// Tak samo jak w Pythonie (SearchConfig.legs): dom → przystanki po kolei → dom.
+function legsOf(stops) {
+  const points = [HOME, ...stops, HOME];
+  return points.slice(1).map((b, i) => {
+    const a = points[i];
+    const name = (c) => (c === HOME ? HOME_NAME : airportName(c));
+    return { id: `${a}>${b}`, from: a, to: b, label: `${name(a)} → ${name(b)}` };
+  });
+}
+
+/* ---------- wybór trasy ---------- */
 
 function renderChips() {
+  const home = `<span class="home">🏠 ${HOME_NAME}</span>`;
   $("chips").innerHTML = selected.length
-    ? selected.map((c) => `
-        <span class="chip${saved.includes(c) ? "" : " new"}">
+    ? [home, ...selected.map((c, i) => `
+        <span class="chip${saved[i] === c ? "" : " new"}">
           ${esc(destName(c))} <span class="muted">${esc(c)}</span>
           <button type="button" data-remove="${esc(c)}" aria-label="Usuń ${esc(c)}">✕</button>
-        </span>`).join("")
-    : `<span class="muted">Brak kierunków – dodaj przynajmniej jeden.</span>`;
+        </span>`), home].join(`<span class="arrow">→</span>`)
+    : `<span class="muted">Brak przystanków – dodaj przynajmniej jeden.</span>`;
   const changed = JSON.stringify(selected) !== JSON.stringify(saved);
   $("save").disabled = !changed || selected.length === 0;
   $("reset").hidden = !changed;
@@ -347,7 +367,7 @@ function renderSuggest() {
 }
 
 function addDest(code) {
-  if (selected.length >= MAX_DEST) { setStatus(`Maksymalnie ${MAX_DEST} kierunków – każdy wydłuża skan.`, "err"); return; }
+  if (selected.length >= MAX_DEST) { setStatus(`Maksymalnie ${MAX_DEST} przystanki – każdy wydłuża skan.`, "err"); return; }
   if (!selected.includes(code)) selected.push(code);
   $("q").value = "";
   $("suggest").hidden = true;
@@ -376,7 +396,7 @@ async function saveDestinations() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: `Kierunki: ${selected.join(", ")}`,
+        message: `Trasa: ${selected.join(" → ")}`,
         content: btoa(unescape(encodeURIComponent(content))),
         sha: meta.sha,
         branch: BRANCH,
@@ -416,7 +436,7 @@ async function watchScan() {
         }
         return;
       }
-      if (run && run.status !== "completed") setStatus("Skanowanie w toku… (zwykle 2–5 min na kierunek)");
+      if (run && run.status !== "completed") setStatus("Skanowanie w toku… (zwykle kilka minut)");
     } catch {}
     await new Promise((r) => setTimeout(r, 20000));
   }
@@ -426,7 +446,7 @@ async function watchScan() {
 
 function monthsWindow() {
   const keys = new Set();
-  for (const code of saved) Object.keys(state.routes[code] || {}).forEach((k) => keys.add(k));
+  for (const leg of legsOf(saved)) Object.keys(state.routes[leg.id] || {}).forEach((k) => keys.add(k));
   const now = new Date();
   const first = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   return [...keys].filter((k) => k >= first).sort();
@@ -434,9 +454,9 @@ function monthsWindow() {
 
 function renderResults() {
   const months = monthsWindow();
-  const out = saved.map((code) => {
-    const route = state.routes[code];
-    const head = `<div class="dest-head"><div><h2>${esc(destName(code))} <span class="muted">${esc(code)}</span></h2>`;
+  const out = legsOf(saved).map((leg, n) => {
+    const route = state.routes[leg.id];
+    const head = `<div class="dest-head"><div><h2><span class="muted">${n + 1}.</span> ${esc(leg.label)}</h2>`;
     if (!route) {
       return `<section class="card">${head}<p class="sub">Czeka na pierwszy skan.</p></div></div>
         <p class="empty-note">Ceny pojawią się tutaj po najbliższym skanie.</p></section>`;
@@ -449,19 +469,23 @@ function renderResults() {
       <div class="hero">
         <div class="label">najtaniej</div>
         <div class="value">${fmt(best.e.current.price)} zł</div>
-        <div class="when">${esc(monthLabel(best.m, true))} · z ${esc(ORIGINS[best.e.current.origin] || best.e.current.origin)}</div>
+        <div class="when">${esc(fullDate(best.e.current.departure_date))} · ${esc(best.e.current.origin)} → ${esc(best.e.current.destination)}</div>
       </div>` : "";
     const sub = checked ? `Sprawdzono ${new Date(checked).toLocaleString("pl-PL", { dateStyle: "short", timeStyle: "short" })}` : "";
-    const chart = withOffers.length ? chartSvg(code, entries, best) : "";
-    const list = withOffers.length
-      ? `<ul class="offers">${withOffers.map((x) => offerRow(x.m, x.e)).join("")}</ul>`
-      : `<p class="empty-note">Na razie brak ofert w żadnym miesiącu.</p>`;
+    const chart = withOffers.length ? chartSvg(leg.label, entries, best) : "";
+    // najpierw 3 najtańsze (jak w raporcie), reszta po rozwinięciu
+    const cheapest = [...withOffers].sort((p, q) => p.e.current.effective_price - q.e.current.effective_price);
+    const rows = (xs) => `<ul class="offers">${xs.map((x) => offerRow(x.m, x.e)).join("")}</ul>`;
+    const list = !withOffers.length
+      ? `<p class="empty-note">Na razie brak ofert w żadnym miesiącu.</p>`
+      : rows(cheapest.slice(0, 3)) + (cheapest.length > 3
+        ? `<details class="more"><summary>Pokaż wszystkie miesiące (${withOffers.length})</summary>${rows(withOffers)}</details>` : "");
     const emptyMonths = entries.filter((x) => !x.e.current).map((x) => x.m);
     const emptyNote = withOffers.length && emptyMonths.length
       ? `<p class="empty-note">Brak ofert: ${esc(ranges(emptyMonths, months))}. Linie sprzedają bilety ok. 11–12 miesięcy do przodu.</p>` : "";
     return `<section class="card">${head}<p class="sub">${esc(sub)}</p></div>${hero}</div>${chart}${list}${emptyNote}</section>`;
   });
-  $("results").innerHTML = out.join("") || `<p class="skeleton">Dodaj kierunek, żeby zobaczyć ceny.</p>`;
+  $("results").innerHTML = saved.length ? out.join("") : `<p class="skeleton">Dodaj przystanek, żeby zobaczyć ceny.</p>`;
 }
 
 function ranges(sel, all) {
@@ -479,9 +503,7 @@ function ranges(sel, all) {
 
 function offerRow(m, e) {
   const o = e.current;
-  const days = o.return_date ? Math.round((new Date(o.return_date) - new Date(o.departure_date)) / 864e5) : null;
-  const when = shortDate(o.departure_date) + (o.return_date ? ` – ${shortDate(o.return_date)} (${days} dni)` : "");
-  const transfers = Math.max(o.transfers || 0, o.return_transfers || 0);
+  const transfers = o.transfers || 0;
   const tags = [
     transfers === 0 ? "bezpośredni" : `przesiadki: ${transfers}`,
     o.airline ? `linia ${o.airline}` : "",
@@ -495,12 +517,12 @@ function offerRow(m, e) {
     <span class="m">${esc(monthLabel(m))}</span>
     <span class="p">${fmt(o.price)} zł</span>
     ${link}
-    <span class="d">${esc(originName(o.origin))} · ${esc(when)}</span>
+    <span class="d">${esc(fullDate(o.departure_date))} · ${esc(airportName(o.origin))} → ${esc(airportName(o.destination))}</span>
     <span class="tags">${tags.join("")}</span>
   </li>`;
 }
 
-function chartSvg(code, entries, best) {
+function chartSvg(label, entries, best) {
   const prices = entries.filter((x) => x.e.current).map((x) => x.e.current.price);
   const max = Math.max(...prices);
   const step = niceStep(max);
@@ -508,7 +530,7 @@ function chartSvg(code, entries, best) {
   const slot = 26, barW = 16, left = 44, h = 170, plotTop = 12, plotH = 118;
   const width = left + entries.length * slot + 8;
   const y = (v) => plotTop + plotH - (v / top) * plotH;
-  let svg = `<svg width="${width}" height="${h}" viewBox="0 0 ${width} ${h}" role="img" aria-label="Najniższa cena w kolejnych miesiącach – ${esc(code)}">`;
+  let svg = `<svg width="${width}" height="${h}" viewBox="0 0 ${width} ${h}" role="img" aria-label="Najniższa cena w kolejnych miesiącach – ${esc(label)}">`;
   for (let v = 0; v <= top; v += step) {
     svg += `<line class="grid" x1="${left}" x2="${width - 4}" y1="${y(v)}" y2="${y(v)}"/>`;
     svg += `<text x="${left - 6}" y="${y(v) + 4}" text-anchor="end">${v >= 1000 ? `${v / 1000}k` : v}</text>`;
@@ -542,8 +564,7 @@ function niceStep(max) {
 }
 
 function tipText(m, o) {
-  const when = shortDate(o.departure_date) + (o.return_date ? `–${shortDate(o.return_date)}` : "");
-  return `${monthLabel(m, true)}|${fmt(o.price)} zł|${originName(o.origin)} · ${when}`;
+  return `${monthLabel(m, true)}|${fmt(o.price)} zł|${fullDate(o.departure_date)} · ${o.origin} → ${o.destination}`;
 }
 
 /* ---------- tooltip ---------- */
@@ -567,7 +588,7 @@ document.addEventListener("scroll", () => { $("tip").style.display = "none"; }, 
 async function loadData() {
   const [cat, settings, st] = await Promise.all([
     readFile("data/destinations.json").catch(() => []),
-    readFile("data/settings.json").catch(() => ({ destinations: ["LAS"] })),
+    readFile("data/settings.json").catch(() => ({ destinations: ["LAS", "MIA"] })),
     readFile("data/state.json").catch(() => ({ routes: {} })),
   ]);
   catalog = cat;

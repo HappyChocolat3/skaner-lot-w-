@@ -3,11 +3,15 @@
 # albo w GitHub Secrets (patrz README).
 
 [search]
-# Kody IATA celów. Zwykle wybierasz je na stronie (GitHub Pages) – wtedy zapisują się
-# w data/settings.json i mają pierwszeństwo przed tą listą.
-destinations = ["LAS"]
+# Przystanki trasy, po kolei. Skaner szuka lotów w jedną stronę na każdym odcinku:
+# lotniska domowe → przystanek 1 → … → ostatni przystanek → lotniska domowe.
+# Np. ["LAS", "MIA"]: Polska → Las Vegas, Las Vegas → Miami, Miami → Polska.
+# Zwykle wybierasz je na stronie (GitHub Pages) – wtedy zapisują się w data/settings.json
+# i mają pierwszeństwo przed tą listą.
+destinations = ["LAS", "MIA"]
 
-# Lotniska wylotowe. Pełna lista znanych lotnisk: python -m skaner airports
+# Lotniska domowe: wylot na pierwszym odcinku i przylot na ostatnim.
+# Pełna lista znanych lotnisk: python -m skaner airports
 origins = [
   "WAW", "WMI", "KRK", "KTW", "GDN", "WRO", "POZ", "RZE",   # Polska
   "PRG", "OSR",                                             # Czechy
@@ -22,18 +26,13 @@ until = "2028-12"
 # Zamiast "until" można podać liczbę miesięcy od bieżącego:
 # months_ahead = 12
 
-# false = lot w obie strony, true = tylko w jedną stronę
-one_way = false
-
 currency = "PLN"
 
-# Filtry – usuń linię, żeby wyłączyć
-max_transfers = 2      # maks. przesiadek w jedną stronę (0 = tylko bezpośrednie)
-min_trip_days = 10     # min. długość pobytu w dniach (tylko loty w obie strony)
-max_trip_days = 15     # maks. długość pobytu w dniach
+# Maks. liczba przesiadek na jednym locie (0 = tylko bezpośrednie). Usuń linię, żeby wyłączyć.
+max_transfers = 2
 
-# Dodatkowy koszt dojazdu do lotniska (PLN). Uwzględniany przy porównaniu,
-# żeby np. lot z Berlina tańszy o 50 zł nie wygrywał z lotem z Warszawy.
+# Dodatkowy koszt dojazdu do/z lotniska (PLN). Uwzględniany przy porównaniu – i przy
+# wylocie, i przy powrocie – żeby np. lot z Berlina tańszy o 50 zł nie wygrywał z Warszawą.
 [search.extra_cost]
 BER = 150
 DRS = 150
@@ -49,7 +48,7 @@ channel = "telegram"
 report_hours = [9, 12, 15, 18]
 timezone = "Europe/Warsaw"
 
-# Ile najtańszych ofert (miesięcy) pokazać w raporcie dla każdego kierunku.
+# Ile najtańszych ofert pokazać w raporcie dla każdego odcinka trasy.
 # Pełna lista jest na stronie.
 report_top = 3
 

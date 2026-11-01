@@ -46,6 +46,10 @@ AIRPORTS: dict[str, Airport] = {
 }
 
 
+# Umowny kod „lotniska domowego”: wszystkie lotniska z `origins` (Polska + przygraniczne).
+HOME = "PL"
+HOME_NAME = "Polska i okolice"
+
 CATALOG_PATH = Path(__file__).resolve().parent.parent / "data" / "destinations.json"
 
 
@@ -59,6 +63,8 @@ def destination_names() -> dict[str, str]:
 
 
 def describe(code: str) -> str:
+    if code == HOME:
+        return HOME_NAME
     a = AIRPORTS.get(code)
     name = a.city if a else destination_names().get(code)
     return f"{name} ({code})" if name else code
