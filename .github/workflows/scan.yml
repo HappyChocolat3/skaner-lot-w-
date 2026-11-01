@@ -1,12 +1,10 @@
 name: Skan lotów
 
 on:
-  schedule:
-    # Raporty o 9, 12, 15 i 18 czasu polskiego. GitHub często opóźnia albo pomija zaplanowane
-    # uruchomienia, więc startujemy co 10 minut w ciągu dnia (cron jest w UTC). Skrypt sam
-    # sprawdza, czy to pora raportu – jeśli nie, kończy się po kilku sekundach.
-    - cron: "*/10 6-17 * * *"
-  workflow_dispatch:          # ręczne uruchomienie z zakładki Actions = raport od razu
+  # Skan uruchamia z zewnątrz cron-job.org (o 8:55, 11:55, 14:55 i 17:55), strona po zapisaniu
+  # trasy albo ręcznie zakładka Actions. Własny harmonogram GitHuba jest wyłączony: bywał
+  # opóźniony o godziny, a gdy ruszał, dublował raporty z cron-job.org.
+  workflow_dispatch:
 
 permissions:
   contents: write             # zapis historii cen (data/state.json)

@@ -29,7 +29,7 @@ Każdy odcinek to osobna lista najtańszych lotów – daty nie są ze sobą dop
 
 ## Jak to działa
 
-1. O 9, 12, 15 i 18 czasu polskiego (GitHub Actions) skaner pyta o ceny dla każdej pary
+1. O 9, 12, 15 i 18 czasu polskiego (cron-job.org uruchamia GitHub Actions) skaner pyta o ceny dla każdej pary
    *lotnisko wylotu → cel* na każdy miesiąc do `until` (domyślnie grudzień 2028).
    Linie sprzedają bilety ok. 11–12 miesięcy do przodu, więc dalsze miesiące pojawią się
    w raporcie, gdy tylko ruszy sprzedaż.
@@ -74,11 +74,21 @@ i dodaj sekrety:
 | `TELEGRAM_BOT_TOKEN` | token od @BotFather |
 | `TELEGRAM_CHAT_ID` | id czatu z kroku 2 |
 
-Workflow `.github/workflows/scan.yml` musi być na domyślnej gałęzi (`main`).
-Raporty przychodzą wtedy o 9, 12, 15 i 18. GitHub potrafi opóźniać, a nawet pomijać
-zaplanowane zadania, dlatego workflow startuje co 10 minut i wysyła raport przy pierwszej
-okazji. Raport spóźniony o ponad 2 godziny jest pomijany. Raport na żądanie:
+Workflow `.github/workflows/scan.yml` musi być na domyślnej gałęzi (`main`). Nie ma własnego
+harmonogramu (GitHub opóźniał zaplanowane zadania o godziny), tylko uruchomienie na żądanie:
 *Actions → Skan lotów → Run workflow*.
+
+### 3a. Raporty o stałych godzinach (cron-job.org)
+Darmowy <https://cron-job.org> uruchamia skan co do minuty. Utwórz osobny token
+fine-grained tylko z uprawnieniem **Actions: Read and write** do tego repozytorium i zadanie:
+
+- URL: `https://api.github.com/repos/<login>/skaner-lot-w-/actions/workflows/scan.yml/dispatches`
+- Harmonogram: godziny 8, 11, 14, 17, minuta 55, strefa **Europe/Warsaw**
+- Metoda **POST**, treść `{"ref":"main"}`
+- Nagłówki: `Authorization: Bearer <token>`, `Accept: application/vnd.github+json`,
+  `Content-Type: application/json`
+
+Skan trwa kilka minut, więc raport dociera około 9, 12, 15 i 18.
 
 ### 4. Strona z cenami i wyborem trasy (GitHub Pages)
 Strona w `docs/` pokazuje ceny na każdy miesiąc (wykres i lista ofert z linkami) i pozwala
@@ -120,9 +130,8 @@ python -m skaner loop                 # działa w tle, raporty o godzinach z con
 - **Przesiadki:** `max_transfers` (maks. na jednym locie).
 - **Koszt dojazdu** do lotnisk w CZ/DE: sekcja `[search.extra_cost]`.
 - **Zakres miesięcy:** `since = "2027-06"` (od kiedy) i `until = "2028-12"` (do kiedy) albo `months_ahead = 12`.
-- **Godziny raportów:** `report_hours = [9, 12, 15, 18]`. Po zmianie dopasuj też
-  `cron` w `.github/workflows/scan.yml` (godziny w UTC; workflow startuje co 10 minut i sam
-  sprawdza, czy to pora raportu).
+- **Godziny raportów:** ustawiasz w zadaniu na cron-job.org. `report_hours` w configu
+  ma znaczenie tylko w trybie lokalnym `python -m skaner loop`.
 - **Długość raportu:** `report_top = 3` – ile najtańszych ofert na odcinek trasy.
 - **Oznaczenie 🔥:** `min_drop_percent`. Opcjonalnie `alert_below`, czyli oznaczenie,
   gdy cena spadnie poniżej podanej kwoty.
