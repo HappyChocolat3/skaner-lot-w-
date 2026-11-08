@@ -18,89 +18,89 @@
   "routes": {
     "LAS>MIA": {
       "2027-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-08": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       }
     },
     "MIA>PL": {
       "2027-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-08": {
@@ -119,14 +119,14 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": {
           "airline": "TP",
           "currency": "PLN",
           "departure_date": "2027-08-28",
           "destination": "WAW",
           "effective_price": 1632.0,
-          "found_at": "2026-11-08T08:01:09+00:00",
+          "found_at": "2026-11-08T19:01:10+00:00",
           "link": "https://www.aviasales.com/search/MIA2808WAW1?t=TP18194115001819541100001800MIALISWAW_d903152b7dc6c9824622e079b141d236_34213&search_date=04112026&expected_price_uuid=01a1a6e0-c9c9-8040-636f-d3a8ddf00e11&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=aHDbmWxhZcUuW64of-zDgg&expected_price_source=share&expected_price_currency=pln&expected_price=1632",
           "origin": "MIA",
           "price": 1632.0,
@@ -153,14 +153,14 @@
           "source": "travelpayouts",
           "transfers": 1
         },
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": {
           "airline": "BA",
           "currency": "PLN",
           "departure_date": "2027-09-11",
           "destination": "WAW",
           "effective_price": 1487.0,
-          "found_at": "2026-11-08T08:01:09+00:00",
+          "found_at": "2026-11-08T19:01:10+00:00",
           "link": "https://www.aviasales.com/search/MIA1109WAW1?t=BA18207024001820785200001020MIALHRWAW_138023fd9b1c12639bac8cb1bdcd8ed0_31181&search_date=04112026&expected_price_uuid=01a1a690-afff-8031-2716-fccda2f00631&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=ebMLeHiBJj8_3_otP3sf_A&expected_price_source=share&expected_price_currency=pln&expected_price=1487",
           "origin": "MIA",
           "price": 1487.0,
@@ -172,141 +172,141 @@
         "last_alert_price": 1490.0
       },
       "2027-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       }
     },
     "PL>LAS": {
       "2027-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-08": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-09": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2027-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-01": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-02": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-03": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-04": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-05": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-06": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-07": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-08": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-09": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-10": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-11": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       },
       "2028-12": {
-        "checked_at": "2026-11-08T08:01:09+00:00",
+        "checked_at": "2026-11-08T19:01:10+00:00",
         "current": null
       }
     }
